@@ -26,18 +26,15 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding-bottom: 100px; /* 留給底部按鈕 */
+            padding-bottom: 100px;
         }
 
-        /* --- Header & Nav 固定區塊 --- */
-        .top-container {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--bg-color); /* 確保不透明 */
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03); /* 輕微陰影區隔內容 */
+        /* Header */
+        .sticky-top-container {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--bg-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
-
         header {
             padding: 15px 24px 5px;
             padding-top: max(15px, env(safe-area-inset-top));
@@ -56,39 +53,22 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- 修正後的 Nav (可滾動) --- */
+        /* Nav */
         .nav-scroll {
-            display: flex;
-            flex-wrap: nowrap; /* 禁止換行 */
-            overflow-x: auto; /* 開啟橫向滾動 */
-            -webkit-overflow-scrolling: touch; /* iOS 慣性滾動關鍵 */
-            gap: 12px;
+            display: flex; gap: 10px; overflow-x: auto; 
             padding: 5px 24px 15px;
-            scrollbar-width: none; /* 隱藏滾動條 Firefox */
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
-        .nav-scroll::-webkit-scrollbar { display: none; /* 隱藏滾動條 Chrome/Safari */ }
-        
+        .nav-scroll::-webkit-scrollbar { display: none; }
         .day-tab {
-            flex: 0 0 auto; /* 禁止壓縮，這很重要！ */
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            background: #EBE8E1;
-            color: #999;
-            border: none;
-            transition: all 0.2s;
-            white-space: nowrap; /* 確保文字不換行 */
+            flex: 0 0 auto; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: 600;
+            background: #EBE8E1; color: #999; border: none; transition: 0.2s; white-space: nowrap;
         }
-        .day-tab.active {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(158, 137, 118, 0.3);
-        }
+        .day-tab.active { background: var(--primary); color: white; transform: scale(1.05); box-shadow: 0 2px 8px rgba(158, 137, 118, 0.3); }
 
         /* Main */
-        main { padding: 20px 24px; max-width: 600px; margin: 0 auto; }
+        main { padding: 20px 24px; max-width: 600px; margin: 0 auto; min-height: 80vh; }
         
         .day-header { margin-bottom: 24px; padding-left: 8px; border-left: 3px solid var(--accent); }
         .day-date { font-size: 20px; font-weight: 700; }
@@ -145,15 +125,12 @@
         .tip-text { font-size: 12px; color: #888; flex: 1; padding-right: 8px; }
         .map-link { text-decoration: none; font-size: 12px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 4px; }
 
-        /* 編輯模式按鈕 */
-        .edit-controls {
-            display: none; justify-content: flex-end; gap: 8px; margin-top: 10px;
-        }
+        /* 編輯模式 */
+        .edit-controls { display: none; justify-content: flex-end; gap: 8px; margin-top: 10px; }
         .edit-mode .edit-controls { display: flex; }
         .btn-sm { font-size: 12px; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; }
         .btn-edit { background: #E3F2FD; color: #1976D2; }
         .btn-del { background: #FFEBEE; color: #C62828; }
-        
         .add-event-btn {
             display: none; width: 100%; padding: 12px; margin-top: 20px;
             background: white; border: 2px dashed #DDD; color: #999; border-radius: 12px;
@@ -161,10 +138,8 @@
         }
         .edit-mode .add-event-btn { display: block; }
 
-        /* Floating Action Buttons */
-        .fab-container {
-            position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 200;
-        }
+        /* FAB */
+        .fab-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 200; }
         .fab {
             width: 50px; height: 50px; border-radius: 25px; border: none;
             background: var(--primary); color: white; font-size: 20px;
@@ -188,29 +163,23 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-        
-        /* Form Styles */
         .form-group { margin-bottom: 12px; }
         .form-label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
-        .form-input { 
+        .form-input, .form-select { 
             width: 100%; padding: 10px; border: 1px solid #DDD; border-radius: 8px;
             font-size: 14px; background: #FAFAFA;
         }
-        .form-select { width: 100%; padding: 10px; border: 1px solid #DDD; border-radius: 8px; }
         .btn-full { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; margin-top: 10px; }
         .btn-close { position: absolute; top: 15px; right: 15px; border: none; background: none; font-size: 20px; color: #999; }
         .btn-import { width: 100%; padding: 8px; background: #E3F2FD; color: #1976D2; border: 1px dashed #1976D2; border-radius: 8px; font-size: 13px; margin-bottom: 15px; }
 
-        /* To-Do List Styles */
-        .todo-item {
-            display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 1px solid #EEE;
-        }
+        /* To-Do & Expense Styles */
+        .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 1px solid #EEE; }
         .todo-checkbox { width: 20px; height: 20px; accent-color: var(--primary); margin-top: 2px; }
         .todo-text { flex: 1; font-size: 15px; line-height: 1.4; }
         .todo-text.done { text-decoration: line-through; color: #CCC; }
         .todo-del { color: #FF6B6B; border: none; background: none; font-size: 18px; padding: 0 5px; }
-
-        /* Expense Styles */
+        
         .expense-header { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; background: #FFF9C4; padding: 10px; border-radius: 8px; }
         .expense-rate-input { width: 60px; padding: 4px; border: 1px solid #DDD; border-radius: 4px; text-align: center; }
         .expense-total { font-weight: 700; color: #E65100; font-size: 16px; margin-top: 5px; text-align: right; }
@@ -225,7 +194,7 @@
 </head>
 <body>
 
-    <div class="top-container">
+    <div class="sticky-top-container">
         <header>
             <h1>FUKUOKA 2025</h1>
             <div class="trip-info">12.22 — 12.27 · 旅程助手</div>
@@ -233,7 +202,6 @@
                 <button class="icon-btn" onclick="resetData()" title="重置">↺</button>
             </div>
         </header>
-
         <div class="nav-scroll" id="navScroll"></div>
     </div>
 
@@ -249,43 +217,26 @@
         <div class="modal" style="position: relative;">
             <button class="btn-close" onclick="closeModal('expenseModal')">×</button>
             <div class="modal-title">💰 記帳助手</div>
-            
             <div class="expense-header">
-                <div style="font-size:12px;">匯率設定: 1 JPY = </div>
+                <div style="font-size:12px;">匯率: 1 JPY = </div>
                 <input type="number" id="exchangeRate" class="expense-rate-input" value="0.052" step="0.001" onchange="updateRate()">
                 <div style="font-size:12px;"> HKD</div>
             </div>
-
-            <div class="form-group">
-                <label class="form-label">消費項目</label>
+            <div class="form-group"><label class="form-label">消費項目</label>
                 <div class="expense-input-row">
                     <input type="text" id="expName" class="form-input" placeholder="例如: 拉麵" style="flex:2">
-                    <select id="expCat" class="form-select" style="flex:1">
-                        <option value="food">食</option>
-                        <option value="shop">買</option>
-                        <option value="stay">行</option>
-                        <option value="other">他</option>
-                    </select>
+                    <select id="expCat" class="form-select" style="flex:1"><option value="food">食</option><option value="shop">買</option><option value="stay">行</option><option value="other">他</option></select>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label class="form-label">金額 (JPY)</label>
+            <div class="form-group"><label class="form-label">金額 (JPY)</label>
                 <div style="display:flex; align-items:center; gap:8px;">
                     <input type="number" id="expAmount" class="form-input" placeholder="¥ 0" oninput="calcPreview()">
                     <div id="hkdPreview" style="font-weight:bold; color:#888; width:80px;">HK$ 0</div>
                 </div>
             </div>
-
             <button class="btn-full" onclick="addExpense()">新增紀錄</button>
-
-            <div class="expense-list" id="expenseListContainer">
-                </div>
-            
-            <div style="margin-top:15px; padding-top:10px; border-top:1px solid #EEE;">
-                <div style="font-size:12px; color:#666;">累積消費總額:</div>
-                <div class="expense-total" id="totalDisplay">¥ 0 (HK$ 0)</div>
-            </div>
+            <div class="expense-list" id="expenseListContainer"></div>
+            <div style="margin-top:15px; padding-top:10px; border-top:1px solid #EEE;"><div style="font-size:12px; color:#666;">累積消費總額:</div><div class="expense-total" id="totalDisplay">¥ 0 (HK$ 0)</div></div>
         </div>
     </div>
 
@@ -293,35 +244,25 @@
         <div class="modal" style="position: relative;">
             <button class="btn-close" onclick="closeModal('eventModal')">×</button>
             <div class="modal-title" id="modalTitle">編輯行程</div>
+            
             <div class="form-group">
-                <label class="form-label">時間</label>
-                <input type="text" id="inpTime" class="form-input" placeholder="10:30">
+                <label class="form-label">時間 (24小時制)</label>
+                <div style="display:flex; gap:10px; align-items: center;">
+                    <input type="number" id="inpHour" class="form-input" placeholder="時 (0-23)" min="0" max="23">
+                    <span style="font-weight:bold; color:#888;">:</span>
+                    <input type="number" id="inpMinute" class="form-input" placeholder="分 (0-59)" min="0" max="59">
+                </div>
             </div>
-            <div class="form-group">
-                <label class="form-label">標題 (地點)</label>
-                <input type="text" id="inpTitle" class="form-input" placeholder="地點名稱">
-            </div>
-            <div class="form-group">
-                <label class="form-label">類別</label>
+
+            <div class="form-group"><label class="form-label">標題 (地點)</label><input type="text" id="inpTitle" class="form-input" placeholder="地點名稱"></div>
+            <div class="form-group"><label class="form-label">類別</label>
                 <select id="inpType" class="form-select">
-                    <option value="food">美食 🍴</option>
-                    <option value="shop">購物 🛍️</option>
-                    <option value="spot">景點 📸</option>
-                    <option value="stay">交通/宿 🚗</option>
+                    <option value="food">美食 🍴</option><option value="shop">購物 🛍️</option><option value="spot">景點 📸</option><option value="stay">交通/宿 🚗</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label class="form-label">營業時間</label>
-                <input type="text" id="inpOpen" class="form-input" placeholder="10:00 - 20:00">
-            </div>
-            <div class="form-group">
-                <label class="form-label">說明</label>
-                <textarea id="inpDesc" class="form-input" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label class="form-label">貼士 (Tips)</label>
-                <input type="text" id="inpTip" class="form-input">
-            </div>
+            <div class="form-group"><label class="form-label">營業時間</label><input type="text" id="inpOpen" class="form-input" placeholder="10:00 - 20:00"></div>
+            <div class="form-group"><label class="form-label">說明</label><textarea id="inpDesc" class="form-input" rows="3"></textarea></div>
+            <div class="form-group"><label class="form-label">貼士 (Tips)</label><input type="text" id="inpTip" class="form-input"></div>
             <button class="btn-full" onclick="saveEvent()">儲存</button>
         </div>
     </div>
@@ -330,9 +271,7 @@
         <div class="modal" style="position: relative;">
             <button class="btn-close" onclick="closeModal('todoModal')">×</button>
             <div class="modal-title">To-Do List 待辦</div>
-            
-            <button class="btn-import" onclick="importRecommendedTodos()">📥 匯入行程預約建議清單 (租車/酒店/餐廳)</button>
-
+            <button class="btn-import" onclick="importRecommendedTodos()">📥 匯入預約建議清單 (租車/酒店/餐廳)</button>
             <div style="display: flex; gap: 8px; margin-bottom: 20px;">
                 <input type="text" id="newTodoInput" class="form-input" placeholder="新增待辦...">
                 <button onclick="addTodo()" style="background: var(--primary); color: white; border: none; border-radius: 8px; width: 40px;">+</button>
@@ -342,74 +281,54 @@
     </div>
 
     <script>
-        // --- 預設行程資料 ---
         var defaultData = [
-            {
-                day: 1, date: "12/22 (MON)", theme: "博多市區 & 聖誕市集 🎄",
-                events: [
-                    { id: 101, time: "07:20", icon: "✈️", title: "抵達福岡機場", type: "stay", open: "05:30 - 22:30", desc: "領行李，至國內線轉乘地鐵。", tip: "建議買 Suica/ICOCA。", link: "Fukuoka Airport" },
-                    { id: 102, time: "08:30", icon: "🧳", title: "Richmond Hotel 寄行李", type: "stay", open: "24H 接待", desc: "位於博多站前，交通方便。", tip: "14:00 才可 Check-in。", link: "Richmond Hotel Hakata Ekimae" },
-                    { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 22:00", desc: "必點：昭和布丁、拿鐵。", tip: "旅行箱主題，超好拍。", link: "FUK COFFEE GION" },
-                    { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", desc: "博多總鎮守，看巨型山笠。", tip: "喝一口靈泉水祈福。", link: "Kushida Shrine Fukuoka" },
-                    { id: 105, time: "11:30", icon: "🥖", title: "Full Full 明太子法包", type: "food", open: "10:00 - 19:00", desc: "外帶，邊走邊吃。", tip: "外皮酥脆內濕潤。", link: "Full Full Hakata" },
-                    { id: 106, time: "12:30", icon: "🥩", title: "石原牛 午餐", type: "food", open: "11:00 - 15:00", desc: "Riverain Mall 內，CP值高。", tip: "⚠️ 需預約", link: "Ishihara Gyu Fukuoka" },
-                    { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", desc: "Alpen 戶外店、聖誕噴泉。", tip: "整點有音樂水舞秀。", link: "Canal City Hakata" },
-                    { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", desc: "熱紅酒、燈飾、Live Band。", tip: "戶外風大注意保暖。", link: "Hakata Station Christmas Market" }
-                ]
-            },
-            {
-                day: 2, date: "12/23 (TUE)", theme: "自駕：青蛙寺 & 由布院 ♨️",
-                events: [
-                    { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車", type: "stay", open: "08:00 - 20:00", desc: "博多站筑紫口。", tip: "帶護照、譯本、ETC卡。", link: "Toyota Rent a Car Hakata Station Chikushi" },
-                    { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", desc: "5000隻青蛙石像。", tip: "象徵平安歸來 (Kaeru)。", link: "Nyoirinji Frog Temple" },
-                    { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", desc: "千本鳥居 + 平原絕景。", tip: "樓梯多，穿好走的鞋。", link: "Ukiha Inari Shrine" },
-                    { id: 204, time: "15:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", desc: "由布院半山，極隱私。", tip: "私人半露天溫泉泡到飽。", link: "Yufuin Poppoan" },
-                    { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", desc: "旅館內享用豐後牛料理。", tip: "準時用餐。", link: "" }
-                ]
-            },
-            {
-                day: 3, date: "12/24 (WED)", theme: "平安夜：Outlet & 牛舌 🎅",
-                events: [
-                    { id: 301, time: "07:00", icon: "🧖", title: "晨間溫泉", type: "stay", open: "06:00 - 23:00", desc: "享受由布院的晨霧美景。", tip: "早晨氣溫低。", link: "" },
-                    { id: 302, time: "11:30", icon: "🛍️", title: "The Outlets Kitakyushu", type: "shop", open: "10:00 - 20:00", desc: "北九州最大，BEAMS/AEON。", tip: "戶外風大。備選：鳥栖。", link: "THE OUTLETS KITAKYUSHU" },
-                    { id: 303, time: "18:30", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", desc: "平安夜大餐，務必預約！", tip: "必點厚切牛舌。", link: "Hakata Tanyaki Yasohachi" },
-                    { id: 304, time: "20:30", icon: "🌃", title: "中洲川端 漫步", type: "spot", open: "24H", desc: "那珂川燈飾，聖誕浪漫散步。", tip: "", link: "Nakasu Kawabata" }
-                ]
-            },
-            {
-                day: 4, date: "12/25 (THU)", theme: "聖誕：天神新地標 ✨",
-                events: [
-                    { id: 401, time: "09:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", desc: "黃色Logo文青店。", tip: "天神巷弄內。", link: "Manu Coffee Tenjin Daimyo" },
-                    { id: 402, time: "14:00", icon: "🏢", title: "One Fukuoka Bldg.", type: "spot", open: "10:00 - 20:00", desc: "2025新地標！天神核心。", tip: "頂樓花園、新店鋪。", link: "Tenjin One Fukuoka Building" },
-                    { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo)", type: "shop", open: "11:00 - 20:00", desc: "Supreme, Stussy, 古著。", tip: "適合街拍。", link: "Daimyo Fukuoka" },
-                    { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", desc: "博多軟烏龍麵，米其林推薦。", tip: "只收現金。", link: "Hagakure Udon" },
-                    { id: 405, time: "20:30", icon: "💡", title: "警固公園 燈飾", type: "spot", open: "17:00 - 24:00", desc: "年輕人聚集地，聖誕氣氛濃。", tip: "", link: "Kego Park" }
-                ]
-            },
-            {
-                day: 5, date: "12/26 (FRI)", theme: "糸島海景 & 鋼彈 🌊",
-                events: [
-                    { id: 501, time: "08:30", icon: "🚗", title: "租車 (單日)", type: "stay", open: "08:00 - 20:00", desc: "前往糸島。", tip: "晚上20:30還車。", link: "Toyota Rent a Car Hakata" },
-                    { id: 502, time: "11:00", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", desc: "白色海上鳥居。", tip: "海風極大！", link: "Sakurai Futamigaura" },
-                    { id: 503, time: "12:00", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", desc: "海邊義大利麵。", tip: "旁邊有紅色巴士 Cafe。", link: "Bakery Restaurant Current" },
-                    { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", desc: "1:1 RX-93ff 鋼彈。", tip: "整點會動。", link: "LaLaport Fukuoka" }
-                ]
-            },
-            {
-                day: 6, date: "12/27 (SAT)", theme: "最後衝刺 & 返程 ✈️",
-                events: [
-                    { id: 601, time: "10:00", icon: "🎁", title: "博多站 1番街", type: "shop", open: "08:00 - 21:00", desc: "最後掃貨。", tip: "明太子、博多通饅頭。", link: "Hakata Station 1 Bangai" },
-                    { id: 602, time: "11:00", icon: "🍜", title: "一蘭 本社總本店", type: "food", open: "24H 營業", desc: "方碗限定拉麵。", tip: "10:45 去排隊。", link: "Ichiran Main Office" },
-                    { id: 603, time: "14:00", icon: "🛫", title: "起飛返家", type: "stay", open: "---", desc: "福岡機場國際線。", tip: "預留安檢時間。", link: "Fukuoka Airport International Terminal" }
-                ]
-            }
+            { day: 1, date: "12/22 (MON)", theme: "博多市區 & 聖誕市集 🎄", events: [
+                { id: 101, time: "07:20", icon: "✈️", title: "抵達福岡機場", type: "stay", open: "05:30 - 22:30", desc: "領行李，至國內線轉乘地鐵。", tip: "建議買 Suica/ICOCA。", link: "Fukuoka Airport" },
+                { id: 102, time: "08:30", icon: "🧳", title: "Richmond Hotel 寄行李", type: "stay", open: "24H 接待", desc: "位於博多站前，交通方便。", tip: "14:00 才可 Check-in。", link: "Richmond Hotel Hakata Ekimae" },
+                { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 22:00", desc: "必點：昭和布丁、拿鐵。", tip: "旅行箱主題，超好拍。", link: "FUK COFFEE GION" },
+                { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", desc: "博多總鎮守，看巨型山笠。", tip: "喝一口靈泉水祈福。", link: "Kushida Shrine Fukuoka" },
+                { id: 106, time: "12:30", icon: "🥩", title: "石原牛 午餐", type: "food", open: "11:00 - 15:00", desc: "Riverain Mall 內，CP值高。", tip: "⚠️ 需預約", link: "Ishihara Gyu Fukuoka" },
+                { id: 1065, time: "14:30", icon: "🏨", title: "回酒店 Check-in & 休息", type: "stay", open: "Check-in: 14:00", desc: "回 Richmond Hotel 辦理入住，放下行李。", tip: "稍微休息，整理戰利品。", link: "Richmond Hotel Hakata Ekimae" },
+                { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", desc: "Alpen 戶外店、聖誕噴泉。", tip: "整點有音樂水舞秀。", link: "Canal City Hakata" },
+                { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", desc: "熱紅酒、燈飾、Live Band。", tip: "戶外風大注意保暖。", link: "Hakata Station Christmas Market" }
+            ]},
+            { day: 2, date: "12/23 (TUE)", theme: "自駕：青蛙寺 & 由布院 ♨️", events: [
+                { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車", type: "stay", open: "08:00 - 20:00", desc: "博多站筑紫口。", tip: "帶護照、譯本、ETC卡。", link: "Toyota Rent a Car Hakata Station Chikushi" },
+                { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", desc: "5000隻青蛙石像。", tip: "象徵平安歸來 (Kaeru)。", link: "Nyoirinji Frog Temple" },
+                { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", desc: "千本鳥居 + 平原絕景。", tip: "樓梯多，穿好走的鞋。", link: "Ukiha Inari Shrine" },
+                { id: 204, time: "15:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", desc: "由布院半山，極隱私。", tip: "私人半露天溫泉泡到飽。", link: "Yufuin Poppoan" },
+                { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", desc: "旅館內享用豐後牛料理。", tip: "準時用餐。", link: "" }
+            ]},
+            { day: 3, date: "12/24 (WED)", theme: "平安夜：Outlet & 牛舌 🎅", events: [
+                { id: 301, time: "07:00", icon: "🧖", title: "晨間溫泉", type: "stay", open: "06:00 - 23:00", desc: "享受由布院的晨霧美景。", tip: "早晨氣溫低。", link: "" },
+                { id: 302, time: "11:30", icon: "🛍️", title: "The Outlets Kitakyushu", type: "shop", open: "10:00 - 20:00", desc: "北九州最大，BEAMS/AEON。", tip: "戶外風大。備選：鳥栖。", link: "THE OUTLETS KITAKYUSHU" },
+                { id: 303, time: "18:30", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", desc: "平安夜大餐，務必預約！", tip: "必點厚切牛舌。", link: "Hakata Tanyaki Yasohachi" },
+                { id: 304, time: "20:30", icon: "🌃", title: "中洲川端 漫步", type: "spot", open: "24H", desc: "那珂川燈飾，聖誕浪漫散步。", tip: "", link: "Nakasu Kawabata" }
+            ]},
+            { day: 4, date: "12/25 (THU)", theme: "聖誕：天神新地標 ✨", events: [
+                { id: 401, time: "09:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", desc: "黃色Logo文青店。", tip: "天神巷弄內。", link: "Manu Coffee Tenjin Daimyo" },
+                { id: 402, time: "14:00", icon: "🏢", title: "One Fukuoka Bldg.", type: "spot", open: "10:00 - 20:00", desc: "2025新地標！天神核心。", tip: "頂樓花園、新店鋪。", link: "Tenjin One Fukuoka Building" },
+                { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo)", type: "shop", open: "11:00 - 20:00", desc: "Supreme, Stussy, 古著。", tip: "適合街拍。", link: "Daimyo Fukuoka" },
+                { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", desc: "博多軟烏龍麵，米其林推薦。", tip: "只收現金。", link: "Hagakure Udon" },
+                { id: 405, time: "20:30", icon: "💡", title: "警固公園 燈飾", type: "spot", open: "17:00 - 24:00", desc: "年輕人聚集地，聖誕氣氛濃。", tip: "", link: "Kego Park" }
+            ]},
+            { day: 5, date: "12/26 (FRI)", theme: "糸島海景 & 鋼彈 🌊", events: [
+                { id: 501, time: "08:30", icon: "🚗", title: "租車 (單日)", type: "stay", open: "08:00 - 20:00", desc: "前往糸島。", tip: "晚上20:30還車。", link: "Toyota Rent a Car Hakata" },
+                { id: 502, time: "11:00", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", desc: "白色海上鳥居。", tip: "海風極大！", link: "Sakurai Futamigaura" },
+                { id: 503, time: "12:00", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", desc: "海邊義大利麵。", tip: "旁邊有紅色巴士 Cafe。", link: "Bakery Restaurant Current" },
+                { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", desc: "1:1 RX-93ff 鋼彈。", tip: "整點會動。", link: "LaLaport Fukuoka" }
+            ]},
+            { day: 6, date: "12/27 (SAT)", theme: "最後衝刺 & 返程 ✈️", events: [
+                { id: 601, time: "10:00", icon: "🎁", title: "博多站 1番街", type: "shop", open: "08:00 - 21:00", desc: "最後掃貨。", tip: "明太子、博多通饅頭。", link: "Hakata Station 1 Bangai" },
+                { id: 602, time: "11:00", icon: "🍜", title: "一蘭 本社總本店", type: "food", open: "24H 營業", desc: "方碗限定拉麵。", tip: "10:45 去排隊。", link: "Ichiran Main Office" },
+                { id: 603, time: "14:00", icon: "🛫", title: "起飛返家", type: "stay", open: "---", desc: "福岡機場國際線。", tip: "預留安檢時間。", link: "Fukuoka Airport International Terminal" }
+            ]}
         ];
 
-        // --- 預設建議清單 (To-Do) ---
         var recommendedTodos = [
             { text: "預約機票 (福岡來回)", done: false },
-            { text: "預約住宿：Richmond Hotel (Day 1, 3-5)", done: false },
-            { text: "預約住宿：由布院 Poppo 庵 (Day 2)", done: false },
+            { text: "預約住宿：Richmond Hotel (全天數 12/22-12/27)", done: false },
+            { text: "預約住宿：由布院 Poppo 庵 (Day 2 一晚)", done: false },
             { text: "預約租車：Toyota Rent-a-Car (Day 2-3)", done: false },
             { text: "預約租車：Toyota Rent-a-Car (Day 5)", done: false },
             { text: "預約餐廳：石原牛 (Day 1 午餐)", done: false },
@@ -419,32 +338,23 @@
             { text: "購買旅遊保險", done: false }
         ];
 
-        // --- 全域變數 ---
         var tripData = [];
         var todoList = [];
         var expenseList = [];
-        var exchangeRate = 0.052; // 預設匯率
-
+        var exchangeRate = 0.052;
         var currentDayIndex = 0;
         var isEditMode = false;
         var editingEventId = null;
 
-        // --- 初始化 ---
         function init() {
-            // 行程
             var savedTrip = localStorage.getItem("myTripData_v2");
             if (savedTrip) tripData = JSON.parse(savedTrip);
             else tripData = JSON.parse(JSON.stringify(defaultData));
 
-            // To-Do (如果完全沒資料，就載入推薦清單)
             var savedTodo = localStorage.getItem("myTodoList");
-            if (savedTodo) {
-                todoList = JSON.parse(savedTodo);
-            } else {
-                todoList = JSON.parse(JSON.stringify(recommendedTodos));
-            }
+            if (savedTodo) todoList = JSON.parse(savedTodo);
+            else todoList = JSON.parse(JSON.stringify(recommendedTodos));
 
-            // 記帳
             var savedExpense = localStorage.getItem("myExpenseList");
             if (savedExpense) expenseList = JSON.parse(savedExpense);
             
@@ -456,286 +366,186 @@
             renderDay(currentDayIndex);
         }
 
-        // --- 資料儲存 ---
-        function saveData() {
-            localStorage.setItem("myTripData_v2", JSON.stringify(tripData));
-            renderDay(currentDayIndex);
-        }
-        function saveTodo() {
-            localStorage.setItem("myTodoList", JSON.stringify(todoList));
-            renderTodoList();
-        }
-        function saveExpense() {
-            localStorage.setItem("myExpenseList", JSON.stringify(expenseList));
-            localStorage.setItem("myExchangeRate", exchangeRate);
-            renderExpenseList();
-        }
+        function saveData() { localStorage.setItem("myTripData_v2", JSON.stringify(tripData)); renderDay(currentDayIndex); }
+        function saveTodo() { localStorage.setItem("myTodoList", JSON.stringify(todoList)); renderTodoList(); }
+        function saveExpense() { localStorage.setItem("myExpenseList", JSON.stringify(expenseList)); localStorage.setItem("myExchangeRate", exchangeRate); renderExpenseList(); }
+        
         function resetData() {
-            if(confirm("確定重置所有資料？(含行程、記帳)")) {
-                localStorage.clear();
-                location.reload();
-            }
+            if(confirm("確定重置所有資料？(含行程、記帳)")) { localStorage.clear(); location.reload(); }
         }
 
-        // --- 核心渲染 ---
         function renderNav() {
-            var nav = document.getElementById('navScroll');
-            nav.innerHTML = '';
+            var nav = document.getElementById('navScroll'); nav.innerHTML = '';
             tripData.forEach(function(day, index) {
                 var btn = document.createElement('button');
                 btn.className = 'day-tab' + (index === currentDayIndex ? ' active' : '');
                 btn.innerText = 'Day ' + day.day;
-                btn.onclick = function() { 
-                    currentDayIndex = index;
-                    renderNav();
-                    renderDay(index);
-                };
+                btn.onclick = function() { switchDay(index); };
                 nav.appendChild(btn);
             });
         }
+        function switchDay(index) { currentDayIndex = index; renderNav(); renderDay(index); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
         function renderDay(index) {
             var data = tripData[index];
             var main = document.getElementById('mainContent');
             var html = '';
-
-            html += '<div class="day-header">';
-            html += '<div class="day-date">' + data.date + '</div>';
-            html += '<div class="day-theme">' + data.theme + '</div>';
-            html += '</div>';
-
+            html += '<div class="day-header"><div class="day-date">' + data.date + '</div><div class="day-theme">' + data.theme + '</div></div>';
             html += '<div class="timeline ' + (isEditMode ? 'edit-mode' : '') + '">';
             data.events.forEach(function(evt) {
-                html += '<div class="event-item">';
-                html += '<div class="dot"></div>';
-                html += '<div class="time">' + evt.time + '</div>';
+                html += '<div class="event-item"><div class="dot"></div><div class="time">' + evt.time + '</div>';
+                html += '<div class="card"><div class="card-header"><div class="icon-box">' + evt.icon + '</div><h3 class="card-title">' + evt.title + '</h3></div>';
                 
-                html += '<div class="card">';
-                html += '<div class="card-header">';
-                html += '<div class="icon-box">' + evt.icon + '</div>';
-                html += '<h3 class="card-title">' + evt.title + '</h3>';
-                html += '</div>';
-                
-                html += '<div class="tags">';
                 var typeMap = { food: "美食", shop: "購物", spot: "景點", stay: "交通/宿" };
-                html += '<span class="tag ' + evt.type + '">' + (typeMap[evt.type] || "其他") + '</span>';
-                html += '</div>';
-
+                html += '<div class="tags"><span class="tag ' + evt.type + '">' + (typeMap[evt.type] || "其他") + '</span></div>';
                 if(evt.open) html += '<div class="open-hours">🕒 ' + evt.open + '</div>';
+                
                 html += '<p class="card-desc">' + evt.desc + '</p>';
-                
                 html += '<div class="footer-action">';
-                if(evt.tip) html += '<div class="tip-text">💡 ' + evt.tip + '</div>';
-                else html += '<div></div>';
-                
+                if(evt.tip) html += '<div class="tip-text">💡 ' + evt.tip + '</div>'; else html += '<div></div>';
                 if(evt.link && !isEditMode) {
                     var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(evt.link);
                     html += '<a href="' + mapUrl + '" class="map-link" target="_blank">MAP ↗</a>';
                 }
                 html += '</div>';
-
-                html += '<div class="edit-controls">';
-                html += '<button class="btn-sm btn-edit" onclick="openEditModal(' + evt.id + ')">修改</button>';
-                html += '<button class="btn-sm btn-del" onclick="deleteEvent(' + evt.id + ')">刪除</button>';
-                html += '</div>';
-                html += '</div>'; // End Card
-                html += '</div>'; // End Item
+                html += '<div class="edit-controls"><button class="btn-sm btn-edit" onclick="openEditModal(' + evt.id + ')">修改</button><button class="btn-sm btn-del" onclick="deleteEvent(' + evt.id + ')">刪除</button></div>';
+                html += '</div></div>';
             });
-            html += '<button class="add-event-btn" onclick="openAddModal()">+ 新增行程</button>';
-            html += '</div>';
-
+            html += '<button class="add-event-btn" onclick="openAddModal()">+ 新增行程</button></div>';
             main.innerHTML = html;
         }
 
-        // --- 記帳功能 (Expense) ---
-        function openExpenseModal() {
-            renderExpenseList();
-            document.getElementById('expenseModal').style.display = 'flex';
-        }
-
-        function updateRate() {
-            exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
-            calcPreview();
-            saveExpense(); // 儲存匯率
-        }
-
+        // Expense
+        function openExpenseModal() { renderExpenseList(); document.getElementById('expenseModal').style.display = 'flex'; }
+        function updateRate() { exchangeRate = parseFloat(document.getElementById('exchangeRate').value); calcPreview(); saveExpense(); }
         function calcPreview() {
             var jpy = parseFloat(document.getElementById('expAmount').value) || 0;
             var hkd = (jpy * exchangeRate).toFixed(1);
             document.getElementById('hkdPreview').innerText = "HK$ " + hkd;
         }
-
         function addExpense() {
-            var name = document.getElementById('expName').value;
-            var amount = parseFloat(document.getElementById('expAmount').value);
-            var cat = document.getElementById('expCat').value;
-            
+            var name = document.getElementById('expName').value; var amount = parseFloat(document.getElementById('expAmount').value); var cat = document.getElementById('expCat').value;
             if(!name || !amount) { alert("請輸入項目和金額"); return; }
-
-            expenseList.push({
-                id: Date.now(),
-                name: name,
-                cat: cat,
-                amount: amount,
-                date: new Date().toLocaleDateString()
-            });
-            
-            // 清空輸入
-            document.getElementById('expName').value = "";
-            document.getElementById('expAmount').value = "";
-            document.getElementById('hkdPreview').innerText = "HK$ 0";
-            
+            expenseList.push({ id: Date.now(), name: name, cat: cat, amount: amount });
+            document.getElementById('expName').value = ""; document.getElementById('expAmount').value = ""; document.getElementById('hkdPreview').innerText = "HK$ 0";
             saveExpense();
         }
-
-        function deleteExpense(id) {
-            if(confirm("刪除此紀錄？")) {
-                expenseList = expenseList.filter(function(e) { return e.id !== id; });
-                saveExpense();
-            }
-        }
-
+        function deleteExpense(id) { if(confirm("刪除此紀錄？")) { expenseList = expenseList.filter(function(e) { return e.id !== id; }); saveExpense(); } }
         function renderExpenseList() {
-            var container = document.getElementById('expenseListContainer');
-            var html = '';
-            var totalJPY = 0;
-
-            if(expenseList.length === 0) {
-                html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>';
-            } else {
+            var container = document.getElementById('expenseListContainer'); var html = ''; var totalJPY = 0;
+            if(expenseList.length === 0) html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>';
+            else {
                 expenseList.forEach(item => {
-                    totalJPY += item.amount;
-                    var hkd = (item.amount * exchangeRate).toFixed(1);
-                    var catMap = { food: "食", shop: "買", stay: "行", other: "他" };
-                    
-                    html += '<div class="expense-item">';
-                    html += '<div style="flex:1;">';
-                    html += '<span class="tag ' + item.cat + '">' + catMap[item.cat] + '</span> ';
-                    html += item.name;
-                    html += '</div>';
-                    html += '<div style="text-align:right;">';
-                    html += '<div class="expense-price">¥' + item.amount.toLocaleString() + '</div>';
-                    html += '<div class="hkd-preview">$' + hkd + '</div>';
-                    html += '</div>';
-                    // 修正刪除按鈕
-                    html += '<button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">刪除</button>';
-                    html += '</div>';
+                    totalJPY += item.amount; var hkd = (item.amount * exchangeRate).toFixed(1); var catMap = { food: "食", shop: "買", stay: "行", other: "他" };
+                    html += '<div class="expense-item"><div style="flex:1;"><span class="tag ' + item.cat + '">' + catMap[item.cat] + '</span> ' + item.name + '</div>';
+                    html += '<div style="text-align:right;"><div class="expense-price">¥' + item.amount.toLocaleString() + '</div><div class="hkd-preview">$' + hkd + '</div></div>';
+                    html += '<button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">刪除</button></div>';
                 });
             }
-            
             container.innerHTML = html;
-            
             var totalHKD = (totalJPY * exchangeRate).toFixed(1);
             document.getElementById('totalDisplay').innerText = "¥ " + totalJPY.toLocaleString() + " (HK$ " + totalHKD + ")";
         }
 
-        // --- 行程編輯 (Event) ---
+        // Event Edit/Add (Updated with Hour/Minute Logic)
         function toggleEditMode() {
             isEditMode = !isEditMode;
             var btn = document.getElementById('editToggleBtn');
-            if(isEditMode) { btn.innerText = "✅"; btn.style.background = "#51CF66"; } 
-            else { btn.innerText = "✏️"; btn.style.background = "var(--primary)"; }
+            if(isEditMode) { btn.innerText = "✅"; btn.style.background = "#51CF66"; } else { btn.innerText = "✏️"; btn.style.background = "var(--primary)"; }
             renderDay(currentDayIndex);
         }
+        
         function openAddModal() {
-            editingEventId = null;
-            document.getElementById('modalTitle').innerText = "新增行程 (Day " + tripData[currentDayIndex].day + ")";
-            document.getElementById('inpTime').value = "";
-            document.getElementById('inpTitle').value = "";
-            document.getElementById('inpDesc').value = "";
-            document.getElementById('inpOpen').value = "";
+            editingEventId = null; 
+            document.getElementById('modalTitle').innerText = "新增行程"; 
+            // Clear inputs
+            document.getElementById('inpHour').value = "";
+            document.getElementById('inpMinute').value = "";
+            document.getElementById('inpTitle').value = ""; 
+            document.getElementById('inpDesc').value = ""; 
+            document.getElementById('inpOpen').value = ""; 
             document.getElementById('inpTip').value = "";
             document.getElementById('eventModal').style.display = 'flex';
         }
+        
         function openEditModal(id) {
-            editingEventId = id;
-            var dayData = tripData[currentDayIndex];
-            var evt = dayData.events.find(e => e.id === id);
+            editingEventId = id; 
+            var dayData = tripData[currentDayIndex]; 
+            var evt = dayData.events.find(e => e.id === id); 
             if(!evt) return;
-            document.getElementById('modalTitle').innerText = "修改行程";
-            document.getElementById('inpTime').value = evt.time;
-            document.getElementById('inpTitle').value = evt.title;
-            document.getElementById('inpType').value = evt.type;
-            document.getElementById('inpOpen').value = evt.open || "";
-            document.getElementById('inpDesc').value = evt.desc;
+            document.getElementById('modalTitle').innerText = "修改行程"; 
+            
+            // Parse Time into Hour and Minute
+            if (evt.time && evt.time.includes(":")) {
+                var parts = evt.time.split(":");
+                document.getElementById('inpHour').value = parseInt(parts[0]);
+                document.getElementById('inpMinute').value = parseInt(parts[1]);
+            } else {
+                document.getElementById('inpHour').value = "";
+                document.getElementById('inpMinute').value = "";
+            }
+
+            document.getElementById('inpTitle').value = evt.title; 
+            document.getElementById('inpType').value = evt.type; 
+            document.getElementById('inpOpen').value = evt.open || ""; 
+            document.getElementById('inpDesc').value = evt.desc; 
             document.getElementById('inpTip').value = evt.tip || "";
             document.getElementById('eventModal').style.display = 'flex';
         }
+        
         function saveEvent() {
-            var time = document.getElementById('inpTime').value;
-            var title = document.getElementById('inpTitle').value;
-            var type = document.getElementById('inpType').value;
-            var open = document.getElementById('inpOpen').value;
-            var desc = document.getElementById('inpDesc').value;
+            var h = document.getElementById('inpHour').value;
+            var m = document.getElementById('inpMinute').value;
+            var title = document.getElementById('inpTitle').value; 
+            var type = document.getElementById('inpType').value; 
+            var open = document.getElementById('inpOpen').value; 
+            var desc = document.getElementById('inpDesc').value; 
             var tip = document.getElementById('inpTip').value;
-            if(!title) { alert("請輸入標題"); return; }
-            var iconMap = { food: "🍴", shop: "🛍️", spot: "📸", stay: "🚗" };
-            var icon = iconMap[type];
 
+            if(!title) { alert("請輸入標題"); return; }
+            if(h === "" || m === "") { alert("請輸入時間"); return; }
+            
+            // Format Time (HH:MM)
+            var timeString = String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0');
+
+            var iconMap = { food: "🍴", shop: "🛍️", spot: "📸", stay: "🚗" }; 
+            var icon = iconMap[type];
+            
             if(editingEventId) {
-                var events = tripData[currentDayIndex].events;
+                var events = tripData[currentDayIndex].events; 
                 var evt = events.find(e => e.id === editingEventId);
-                if(evt) {
-                    evt.time = time; evt.title = title; evt.type = type;
-                    evt.open = open; evt.desc = desc; evt.tip = tip; evt.icon = icon;
-                    evt.link = title;
+                if(evt) { 
+                    evt.time = timeString; evt.title = title; evt.type = type; evt.open = open; evt.desc = desc; evt.tip = tip; evt.icon = icon; evt.link = title;
                 }
             } else {
-                var newEvent = {
-                    id: Date.now(), time: time, title: title, type: type, icon: icon,
-                    open: open, desc: desc, tip: tip, link: title
-                };
-                tripData[currentDayIndex].events.push(newEvent);
+                var newEvent = { id: Date.now(), time: timeString, title: title, type: type, icon: icon, open: open, desc: desc, tip: tip, link: title };
+                tripData[currentDayIndex].events.push(newEvent); 
                 tripData[currentDayIndex].events.sort((a, b) => a.time.localeCompare(b.time));
             }
-            saveData();
+            saveData(); 
             closeModal('eventModal');
         }
-        function deleteEvent(id) {
-            if(confirm("確定刪除此行程？")) {
-                tripData[currentDayIndex].events = tripData[currentDayIndex].events.filter(e => e.id !== id);
-                saveData();
-            }
-        }
-
-        // --- To-Do ---
-        function openTodoModal() { renderTodoList(); document.getElementById('todoModal').style.display = 'flex'; }
         
+        function deleteEvent(id) { if(confirm("確定刪除此行程？")) { tripData[currentDayIndex].events = tripData[currentDayIndex].events.filter(e => e.id !== id); saveData(); } }
+
+        // To-Do
+        function openTodoModal() { renderTodoList(); document.getElementById('todoModal').style.display = 'flex'; }
         function renderTodoList() {
-            var container = document.getElementById('todoListContainer');
-            var html = '';
+            var container = document.getElementById('todoListContainer'); var html = '';
             if(todoList.length === 0) html = '<div style="text-align:center; color:#999; margin-top:20px;">尚無待辦</div>';
             else {
                 todoList.forEach(function(item, index) {
-                    html += '<div class="todo-item">';
-                    html += '<input type="checkbox" class="todo-checkbox" ' + (item.done ? 'checked' : '') + ' onchange="toggleTodo(' + index + ')">';
-                    html += '<div class="todo-text ' + (item.done ? 'done' : '') + '">' + item.text + '</div>';
-                    html += '<button class="todo-del" onclick="deleteTodo(' + index + ')">×</button>';
-                    html += '</div>';
+                    html += '<div class="todo-item"><input type="checkbox" class="todo-checkbox" ' + (item.done ? 'checked' : '') + ' onchange="toggleTodo(' + index + ')">';
+                    html += '<div class="todo-text ' + (item.done ? 'done' : '') + '">' + item.text + '</div><button class="todo-del" onclick="deleteTodo(' + index + ')">×</button></div>';
                 });
             }
             container.innerHTML = html;
         }
-
-        function importRecommendedTodos() {
-            if(confirm("確定要匯入預約清單嗎？")) {
-                // 將推薦清單加到現有清單後
-                var newItems = JSON.parse(JSON.stringify(recommendedTodos));
-                todoList = todoList.concat(newItems);
-                saveTodo();
-                alert("匯入完成！");
-            }
-        }
-
-        function addTodo() {
-            var input = document.getElementById('newTodoInput');
-            var text = input.value.trim();
-            if(text) { todoList.push({ text: text, done: false }); input.value = ""; saveTodo(); }
-        }
+        function importRecommendedTodos() { if(confirm("確定要匯入預約清單嗎？")) { var newItems = JSON.parse(JSON.stringify(recommendedTodos)); todoList = todoList.concat(newItems); saveTodo(); alert("匯入完成！"); } }
+        function addTodo() { var input = document.getElementById('newTodoInput'); var text = input.value.trim(); if(text) { todoList.push({ text: text, done: false }); input.value = ""; saveTodo(); } }
         function toggleTodo(index) { todoList[index].done = !todoList[index].done; saveTodo(); }
         function deleteTodo(index) { todoList.splice(index, 1); saveTodo(); }
 
-        // --- 通用 ---
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         init();
     </script>
