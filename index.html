@@ -6,24 +6,23 @@
     <meta name="theme-color" content="#FFF8E1">
     <title>Fukuoka Trip 2025</title>
     <style>
-        /* --- Chip 'n Dale (奇奇蒂蒂) 溫暖橡實風格 --- */
+        /* --- Chip 'n Dale 風格 --- */
         :root {
-            --bg-color: #FFF8E1;      /* 奶油米黃 (Fur color) */
-            --primary: #5D4037;       /* 深咖啡色 (Chip's nose/stripe) - 沈穩 */
+            --bg-color: #FFF8E1;      /* 奶油米黃 */
+            --primary: #5D4037;       /* 深咖啡色 */
             --primary-light: #8D6E63; /* 淺咖啡 */
-            --accent: #D84315;        /* 磚紅色 (Dale's nose) - 活潑亮點 */
+            --accent: #D84315;        /* 磚紅色 */
             --text-main: #3E2723;     /* 深褐黑 */
             --text-sub: #795548;      /* 淺褐 */
             --card-bg: #FFFFFF;
             --line-color: #EFEBE9;
-            --tag-bg: #FFF3E0;
-            --radius: 20px;           /* 更圓潤可愛 */
+            --radius: 20px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Microsoft JhengHei", "Segoe UI Emoji", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -31,201 +30,116 @@
             line-height: 1.6;
         }
 
-        /* Header & Sticky Container */
+        /* Header */
         .sticky-top-container {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 248, 225, 0.95); /* 毛玻璃 */
+            background: rgba(255, 248, 225, 0.95);
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 15px rgba(93, 64, 55, 0.05);
             border-bottom: 2px solid rgba(93, 64, 55, 0.05);
         }
-
-        header {
-            padding: 15px 24px 5px;
-            padding-top: max(15px, env(safe-area-inset-top));
-            position: relative;
-        }
+        header { padding: 15px 24px 5px; padding-top: max(15px, env(safe-area-inset-top)); position: relative; }
         h1 { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0; letter-spacing: 1px; }
         .trip-info { font-size: 13px; color: var(--text-sub); margin-top: 4px; font-weight: 600; letter-spacing: 0.5px; }
         
-        .header-actions {
-            position: absolute; right: 20px; top: 20px;
-            display: flex; gap: 10px; padding-top: max(0px, env(safe-area-inset-top));
-        }
+        .header-actions { position: absolute; right: 20px; top: 20px; display: flex; gap: 10px; padding-top: max(0px, env(safe-area-inset-top)); }
         .icon-btn {
-            background: white; border: 2px solid var(--line-color); font-size: 18px; cursor: pointer;
+            background: white; border: 2px solid var(--line-color); font-size: 16px; cursor: pointer;
             width: 38px; height: 38px; border-radius: 50%; color: var(--primary);
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 2px 5px rgba(93, 64, 55, 0.1);
         }
 
-        /* Nav Scroll */
-        .nav-scroll {
-            display: flex; gap: 10px; overflow-x: auto; 
-            padding: 10px 24px 15px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
+        /* Nav */
+        .nav-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 24px 15px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .nav-scroll::-webkit-scrollbar { display: none; }
         .day-tab {
             flex: 0 0 auto; padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: 700;
             background: white; color: var(--text-sub); border: 2px solid #EFEBE9; 
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap; /* 彈性動畫 */
+            transition: all 0.2s; white-space: nowrap;
         }
-        .day-tab.active { 
-            background: var(--primary); color: white; border-color: var(--primary);
-            transform: scale(1.05); box-shadow: 0 4px 10px rgba(93, 64, 55, 0.3);
-        }
+        .day-tab.active { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05); box-shadow: 0 4px 10px rgba(93, 64, 55, 0.3); }
 
-        /* Main Content */
+        /* Main */
         main { padding: 20px 24px; max-width: 600px; margin: 0 auto; min-height: 80vh; }
         
-        .day-header { margin-bottom: 24px; padding-left: 12px; border-left: 5px solid var(--accent); border-radius: 2px; }
+        .day-header { margin-bottom: 24px; padding-left: 12px; border-left: 5px solid var(--accent); }
         .day-date { font-size: 22px; font-weight: 800; color: var(--primary); }
         .day-theme { font-size: 14px; color: var(--accent); margin-top: 4px; font-weight: 600; }
 
         /* Timeline */
         .timeline { position: relative; padding-left: 12px; }
-        .timeline::before {
-            content: ''; position: absolute; left: 6px; top: 15px; bottom: 0; width: 3px;
-            background-color: #EFEBE9; border-radius: 2px;
-        }
-
+        .timeline::before { content: ''; position: absolute; left: 6px; top: 15px; bottom: 0; width: 3px; background-color: #EFEBE9; border-radius: 2px; }
         .event-item { position: relative; margin-bottom: 32px; padding-left: 28px; }
-        .dot {
-            position: absolute; left: -3px; top: 5px; width: 20px; height: 20px;
-            background: #FFCC80; /* 橡實黃 */
-            border: 4px solid white; border-radius: 50%; z-index: 2;
-            box-shadow: 0 0 0 2px var(--accent);
-        }
-        .time {
-            font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 6px; display: inline-block;
-            background: #FFF3E0; padding: 2px 10px; border-radius: 10px;
-        }
+        .dot { position: absolute; left: -3px; top: 5px; width: 20px; height: 20px; background: #FFCC80; border: 4px solid white; border-radius: 50%; z-index: 2; box-shadow: 0 0 0 2px var(--accent); }
+        .time { font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 6px; display: inline-block; background: #FFF3E0; padding: 2px 10px; border-radius: 10px; }
 
-        /* Card Design */
-        .card {
-            background: var(--card-bg); border-radius: var(--radius); padding: 20px;
-            box-shadow: 0 8px 20px rgba(93, 64, 55, 0.06); 
-            border: 1px solid rgba(93, 64, 55, 0.05);
-            position: relative;
-        }
-        
+        /* Card */
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: 0 8px 20px rgba(93, 64, 55, 0.06); border: 1px solid rgba(93, 64, 55, 0.05); position: relative; }
         .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
         .icon-box { font-size: 24px; line-height: 1; margin-top: 2px; }
         .card-title { font-size: 17px; font-weight: 800; margin: 0; line-height: 1.4; flex: 1; color: var(--primary); }
         
-        /* Tags */
         .tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
         .tag { font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700; letter-spacing: 0.5px; }
-        .tag.food { background: #FFECB3; color: #BF360C; } /* 橘黃 */
-        .tag.shop { background: #E1BEE7; color: #4A148C; } /* 紫 */
-        .tag.spot { background: #B2DFDB; color: #004D40; } /* 綠 */
-        .tag.stay { background: #BBDEFB; color: #0D47A1; } /* 藍 */
+        .tag.food { background: #FFECB3; color: #BF360C; }
+        .tag.shop { background: #E1BEE7; color: #4A148C; }
+        .tag.spot { background: #B2DFDB; color: #004D40; }
+        .tag.stay { background: #BBDEFB; color: #0D47A1; }
+        .tag.trans { background: #E0F2F1; color: #00695C; }
         .tag.other { background: #F5F5F5; color: #616161; }
 
-        .open-hours {
-            font-size: 12px; color: var(--text-sub); background: #F5F5F5; 
-            padding: 4px 8px; border-radius: 6px; display: inline-block; 
-            margin-bottom: 12px; font-weight: 600;
-        }
-        
-        .num-stats {
-            display: flex; gap: 12px; margin-bottom: 12px; font-size: 13px; color: var(--accent); font-weight: 700;
-            background: #FFF3E0; padding: 6px 12px; border-radius: 8px; width: fit-content;
-        }
+        .open-hours { font-size: 12px; color: var(--text-sub); background: #F5F5F5; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 12px; font-weight: 600; }
+        .num-stats { display: flex; gap: 12px; margin-bottom: 12px; font-size: 13px; color: var(--accent); font-weight: 700; background: #FFF3E0; padding: 6px 12px; border-radius: 8px; width: fit-content; }
+        .card-desc { font-size: 14px; color: #5D4037; margin: 0 0 16px 0; line-height: 1.7; text-align: justify; }
+        .footer-action { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 15px; padding-top: 15px; border-top: 2px dashed var(--line-color); }
+        .tip-text { font-size: 13px; color: #8D6E63; flex: 1; padding-right: 12px; line-height: 1.4; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="%23D84315"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>') no-repeat left 1px; padding-left: 18px; }
+        .map-link { text-decoration: none; font-size: 12px; font-weight: 700; color: white; background: var(--accent); padding: 6px 14px; border-radius: 20px; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(216, 67, 21, 0.2); }
 
-        .card-desc { 
-            font-size: 14px; color: #5D4037; margin: 0 0 16px 0; line-height: 1.7; 
-            text-align: justify; 
-        }
-
-        .footer-action {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-top: 15px; padding-top: 15px; border-top: 2px dashed var(--line-color);
-        }
-        .tip-text { 
-            font-size: 13px; color: #8D6E63; flex: 1; padding-right: 12px; line-height: 1.4; 
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="%23D84315"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>') no-repeat left 1px;
-            padding-left: 18px;
-        }
-        .map-link { 
-            text-decoration: none; font-size: 12px; font-weight: 700; color: white; 
-            background: var(--accent); padding: 6px 14px; border-radius: 20px;
-            display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(216, 67, 21, 0.2);
-            transition: transform 0.2s;
-        }
-        .map-link:active { transform: scale(0.95); }
-
-        /* Edit Controls */
+        /* Controls */
         .edit-controls { display: none; justify-content: flex-end; gap: 10px; margin-top: 15px; }
         .edit-mode .edit-controls { display: flex; }
         .btn-sm { font-size: 12px; padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
         .btn-edit { background: #BBDEFB; color: #0D47A1; }
         .btn-del { background: #FFCDD2; color: #B71C1C; }
-        .add-event-btn {
-            display: none; width: 100%; padding: 15px; margin-top: 30px;
-            background: white; border: 2px dashed var(--primary-light); color: var(--primary-light); border-radius: 12px;
-            font-weight: 700; cursor: pointer; text-align: center;
-        }
+        .add-event-btn { display: none; width: 100%; padding: 15px; margin-top: 30px; background: white; border: 2px dashed var(--primary-light); color: var(--primary-light); border-radius: 12px; font-weight: 700; cursor: pointer; text-align: center; }
         .edit-mode .add-event-btn { display: block; }
 
-        /* Floating Buttons */
+        /* FAB */
         .fab-container { position: fixed; bottom: 30px; right: 24px; display: flex; flex-direction: column; gap: 15px; z-index: 200; }
-        .fab {
-            width: 56px; height: 56px; border-radius: 28px; border: none;
-            background: var(--primary); color: white; font-size: 24px;
-            box-shadow: 0 6px 16px rgba(93, 64, 55, 0.3); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s;
-        }
+        .fab { width: 56px; height: 56px; border-radius: 28px; border: none; background: var(--primary); color: white; font-size: 24px; box-shadow: 0 6px 16px rgba(93, 64, 55, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
         .fab:active { transform: scale(0.9); }
         .fab.secondary { background: white; color: var(--primary); border: 2px solid var(--bg-color); }
-        .fab.money { background: #FFCC80; color: #5D4037; } /* 像橡實一樣的顏色 */
+        .fab.money { background: #FFCC80; color: #5D4037; }
 
         /* Modals */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(93, 64, 55, 0.4); backdrop-filter: blur(4px); z-index: 300; display: none;
-            align-items: center; justify-content: center;
-        }
-        .modal {
-            background: #FFF; width: 90%; max-width: 400px; max-height: 85vh;
-            border-radius: 24px; padding: 24px; overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(93, 64, 55, 0.4); backdrop-filter: blur(4px); z-index: 300; display: none; align-items: center; justify-content: center; }
+        .modal { background: #FFF; width: 90%; max-width: 400px; max-height: 85vh; border-radius: 24px; padding: 24px; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: var(--primary); text-align: center; }
         .form-group { margin-bottom: 15px; }
         .form-label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600; }
-        .form-input, .form-select { 
-            width: 100%; padding: 12px; border: 2px solid var(--line-color); border-radius: 12px;
-            font-size: 15px; background: #FAFAFA; color: var(--primary); transition: 0.2s;
-        }
-        .form-input:focus { border-color: var(--accent); outline: none; background: white; }
-        
-        .btn-full { 
-            width: 100%; padding: 14px; background: var(--primary); color: white; border: none; 
-            border-radius: 14px; font-weight: 700; margin-top: 15px; font-size: 16px;
-            box-shadow: 0 4px 10px rgba(93, 64, 55, 0.2);
-        }
+        .form-input, .form-select { width: 100%; padding: 12px; border: 2px solid var(--line-color); border-radius: 12px; font-size: 15px; background: #FAFAFA; color: var(--primary); }
+        .btn-full { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; margin-top: 15px; font-size: 16px; box-shadow: 0 4px 10px rgba(93, 64, 55, 0.2); }
         .btn-close { position: absolute; top: 15px; right: 15px; border: none; background: none; font-size: 24px; color: #AAA; }
-        .btn-import { 
-            width: 100%; padding: 10px; background: #E0F7FA; color: #006064; 
-            border: 1px dashed #0097A7; border-radius: 12px; font-size: 13px; 
-            margin-bottom: 20px; font-weight: 600;
-        }
+        .btn-import { width: 100%; padding: 10px; background: #E0F7FA; color: #006064; border: 1px dashed #0097A7; border-radius: 12px; font-size: 13px; margin-bottom: 20px; font-weight: 600; }
+        .btn-sync { width: 100%; padding: 12px; background: #E8F5E9; color: #2E7D32; border: 1px dashed #2E7D32; border-radius: 12px; font-size: 14px; font-weight: 700; margin-bottom: 15px; text-align: center; cursor: pointer; }
 
-        /* Expense Specific */
-        .expense-header { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; background: #FFF3E0; padding: 12px; border-radius: 12px; }
+        /* Expense Styles */
+        .expense-header { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; background: #FFF3E0; padding: 12px; border-radius: 12px; }
         .expense-rate-input { width: 70px; padding: 6px; border: 1px solid #FFCC80; border-radius: 8px; text-align: center; font-weight: bold; color: var(--primary); }
         .expense-total { font-weight: 800; color: var(--accent); font-size: 18px; margin-top: 5px; text-align: right; }
-        .expense-list { margin-top: 20px; border-top: 2px dashed #EFEBE9; max-height: 250px; overflow-y: auto; padding-top: 10px; }
-        .expense-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F5F5F5; font-size: 14px; align-items: center; }
+        .expense-list { margin-top: 15px; border-top: 2px dashed #EFEBE9; max-height: 200px; overflow-y: auto; padding-top: 10px; }
+        .expense-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F5F5F5; font-size: 14px; align-items: center; }
         .expense-price { font-weight: 700; color: var(--primary); text-align: right; }
-        .hkd-preview { font-size: 12px; color: #9E9E9E; margin-top: 2px; }
+        .hkd-sub { font-size: 11px; color: #9E9E9E; }
         .btn-del-exp { background: #FFEBEE; color: #C62828; border: none; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;}
+        
+        /* Summary Section */
+        .summary-container { margin-top: 15px; background: #FAFAFA; border-radius: 12px; padding: 12px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: var(--text-sub); }
+        .summary-total { margin-top: 10px; border-top: 1px dashed #DDD; padding-top: 10px; font-weight: 800; font-size: 16px; color: var(--accent); text-align: right; }
 
-        /* To-Do Styles */
+        /* To-Do */
         .todo-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F5F5F5; }
         .todo-checkbox { width: 22px; height: 22px; accent-color: var(--accent); margin-top: 2px; }
         .todo-text { flex: 1; font-size: 15px; line-height: 1.5; color: var(--primary); }
@@ -241,7 +155,7 @@
             <h1>FUKUOKA 2025 🐿️</h1>
             <div class="trip-info">12.22 — 12.27 · Chip 'n Dale 浪漫之旅</div>
             <div class="header-actions">
-                <button class="icon-btn" onclick="resetData()" title="重置資料">↺</button>
+                <button class="icon-btn" onclick="openSyncModal()" title="資料同步">⇄</button>
             </div>
         </header>
         <div class="nav-scroll" id="navScroll"></div>
@@ -255,30 +169,65 @@
         <button class="fab" id="editToggleBtn" onclick="toggleEditMode()">✏️</button>
     </div>
 
+    <div class="modal-overlay" id="syncModal">
+        <div class="modal" style="position: relative;">
+            <button class="btn-close" onclick="closeModal('syncModal')">×</button>
+            <div class="modal-title">資料同步 / 備份</div>
+            <p style="font-size:14px; color:#795548; margin-bottom:20px;">資料存在手機裡。若要給另一半，請「匯出」代碼傳給對方「匯入」。</p>
+            <label class="form-label">Step 1: 匯出我的資料</label>
+            <button class="btn-sync" onclick="exportData()">📤 複製資料代碼</button>
+            <div style="margin: 20px 0; border-top: 1px dashed #DDD;"></div>
+            <label class="form-label">Step 2: 匯入對方資料</label>
+            <textarea id="importInput" class="form-input" rows="3" placeholder="在此貼上代碼..."></textarea>
+            <button class="btn-full" onclick="importData()">📥 匯入並覆蓋</button>
+            <div style="margin-top: 20px; text-align:center;"><button onclick="resetData()" style="color:#AAA; background:none; border:none; font-size:12px; text-decoration:underline;">重置所有資料 (Reset)</button></div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="expenseModal">
         <div class="modal" style="position: relative;">
             <button class="btn-close" onclick="closeModal('expenseModal')">×</button>
             <div class="modal-title">💰 記帳小助手</div>
+            
             <div class="expense-header">
-                <div style="font-size:13px; font-weight:600;">目前匯率: 1 JPY = </div>
+                <div style="font-size:13px; font-weight:600;">匯率設定: 1 JPY = </div>
                 <input type="number" id="exchangeRate" class="expense-rate-input" value="0.052" step="0.001" onchange="updateRate()">
                 <div style="font-size:13px; font-weight:600;"> HKD</div>
             </div>
-            <div class="form-group"><label class="form-label">消費項目</label>
+
+            <div class="form-group"><label class="form-label">消費項目 & 類別</label>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="expName" class="form-input" placeholder="例如: 糰子" style="flex:2">
-                    <select id="expCat" class="form-select" style="flex:1"><option value="food">食</option><option value="shop">買</option><option value="stay">行</option><option value="other">他</option></select>
+                    <input type="text" id="expName" class="form-input" placeholder="例如: 伴手禮" style="flex:2">
+                    <select id="expCat" class="form-select" style="flex:1">
+                        <option value="food">🍽️ 食</option>
+                        <option value="shop">🛍️ 買</option>
+                        <option value="trans">🚇 行</option>
+                        <option value="play">🎡 玩</option>
+                        <option value="misc">🧩 雜</option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group"><label class="form-label">金額 (JPY)</label>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <input type="number" id="expAmount" class="form-input" placeholder="¥ 0" oninput="calcPreview()">
-                    <div id="hkdPreview" style="font-weight:bold; color:#8D6E63; width:80px;">HK$ 0</div>
+            
+            <div class="form-group">
+                <label class="form-label">金額輸入 (填一邊即可，自動換算)</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <div style="flex:1; position:relative;">
+                        <span style="position:absolute; left:10px; top:12px; color:#AAA; font-size:12px;">¥</span>
+                        <input type="number" id="expAmount" class="form-input" placeholder="日幣" style="padding-left:25px;" oninput="calcFromJPY()">
+                    </div>
+                    <div style="color:#AAA;">⇄</div>
+                    <div style="flex:1; position:relative;">
+                        <span style="position:absolute; left:10px; top:12px; color:#AAA; font-size:12px;">$</span>
+                        <input type="number" id="expAmountHKD" class="form-input" placeholder="港幣" style="padding-left:25px;" oninput="calcFromHKD()">
+                    </div>
                 </div>
             </div>
+
             <button class="btn-full" onclick="addExpense()">新增紀錄</button>
+
             <div class="expense-list" id="expenseListContainer"></div>
-            <div style="margin-top:20px; padding-top:15px; border-top:2px dashed #EFEBE9;"><div style="font-size:13px; color:#8D6E63;">累積消費總額:</div><div class="expense-total" id="totalDisplay">¥ 0 (HK$ 0)</div></div>
+            
+            <div class="summary-container" id="summaryContainer"></div>
         </div>
     </div>
 
@@ -286,35 +235,26 @@
         <div class="modal" style="position: relative;">
             <button class="btn-close" onclick="closeModal('eventModal')">×</button>
             <div class="modal-title" id="modalTitle">編輯行程</div>
-            <div class="form-group">
-                <label class="form-label">時間 (24小時制)</label>
+            <div class="form-group"><label class="form-label">時間 (24H)</label>
                 <div style="display:flex; gap:10px; align-items: center;">
-                    <input type="number" id="inpHour" class="form-input" placeholder="時" min="0" max="23">
+                    <input type="number" id="inpHour" class="form-input" placeholder="時 (0-23)" min="0" max="23" oninput="if(value>23)value=23;if(value.length>2)value=value.slice(0,2);">
                     <span style="font-weight:bold; color:#8D6E63;">:</span>
-                    <input type="number" id="inpMinute" class="form-input" placeholder="分" min="0" max="59">
+                    <input type="number" id="inpMinute" class="form-input" placeholder="分 (0-59)" min="0" max="59" oninput="if(value>59)value=59;if(value.length>2)value=value.slice(0,2);">
                 </div>
             </div>
-            <div class="form-group"><label class="form-label">標題 (地點)</label><input type="text" id="inpTitle" class="form-input" placeholder="地點名稱"></div>
+            <div class="form-group"><label class="form-label">標題</label><input type="text" id="inpTitle" class="form-input"></div>
             <div class="form-group"><label class="form-label">類別</label>
                 <select id="inpType" class="form-select">
                     <option value="food">美食 🍴</option><option value="shop">購物 🛍️</option><option value="spot">景點 📸</option><option value="stay">交通/宿 🚗</option>
                 </select>
             </div>
-            <div class="form-group"><label class="form-label">營業時間</label><input type="text" id="inpOpen" class="form-input" placeholder="例如: 10:00 - 20:00"></div>
-            
+            <div class="form-group"><label class="form-label">營業時間</label><input type="text" id="inpOpen" class="form-input"></div>
             <div style="display:flex; gap:10px;">
-                <div class="form-group" style="flex:1;">
-                    <label class="form-label">預算/金額 (¥)</label>
-                    <input type="number" id="inpNum1" class="form-input" placeholder="0">
-                </div>
-                <div class="form-group" style="flex:1;">
-                    <label class="form-label">人數/其他</label>
-                    <input type="number" id="inpNum2" class="form-input" placeholder="0">
-                </div>
+                <div class="form-group" style="flex:1;"><label class="form-label">預算(¥)</label><input type="number" id="inpNum1" class="form-input"></div>
+                <div class="form-group" style="flex:1;"><label class="form-label">人數/其他</label><input type="number" id="inpNum2" class="form-input"></div>
             </div>
-
-            <div class="form-group"><label class="form-label">詳細說明 (旅遊書風格)</label><textarea id="inpDesc" class="form-input" rows="4"></textarea></div>
-            <div class="form-group"><label class="form-label">貼士 (Tips)</label><input type="text" id="inpTip" class="form-input"></div>
+            <div class="form-group"><label class="form-label">詳細說明</label><textarea id="inpDesc" class="form-input" rows="4"></textarea></div>
+            <div class="form-group"><label class="form-label">貼士</label><input type="text" id="inpTip" class="form-input"></div>
             <button class="btn-full" onclick="saveEvent()">儲存</button>
         </div>
     </div>
@@ -333,56 +273,56 @@
     </div>
 
     <script>
-        // --- 旅遊書風格資料庫 (Enriched Content) ---
+        // --- Data ---
         var defaultData = [
             { day: 1, date: "12/22 (MON)", theme: "博多聖誕 & 市區漫遊 🎄", events: [
                 { id: 101, time: "07:20", icon: "✈️", title: "抵達福岡機場", type: "stay", open: "05:30 - 22:30", desc: "福岡機場號稱『日本最方便機場』，搭乘地鐵空港線到博多站僅需 12 分鐘。下機後請沿著藍色指示牌前往國內線航廈轉乘地鐵。", tip: "建議先在機場買好交通 IC 卡 (Suica/ICOCA)。", link: "Fukuoka Airport" },
-                { id: 102, time: "08:30", icon: "🧳", title: "Richmond Hotel 寄行李", type: "stay", open: "24H 接待", desc: "位於博多站筑紫口步行 5 分鐘，地理位置極佳。大廳明亮，服務人員親切。先寄放行李，輕裝上陣開始第一天的行程！", tip: "Check-in 時間為 14:00，記得拿寄放號碼牌。", link: "Richmond Hotel Hakata Ekimae" },
-                { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 20:00", desc: "🍴 **必吃推薦：** 昭和布丁 (¥600)。口感紮實綿密，帶有微苦的焦糖大人味，上方會插著可愛的飛機旗幟。拿鐵拉花也非常精緻。\n📸 **拍照點：** 店門口的行李箱貼紙風格 Logo 是必拍打卡位。", tip: "店內座位不多，建議避開上班尖峰。", link: "FUK COFFEE GION" },
-                { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", desc: "博多的總鎮守，當地人暱稱「O-Kushida-san」。\n📸 **亮點：** 全年展示的巨型「飾山笠」，高達 10 公尺，氣勢驚人，細節精緻。還有一棵著名的「夫婦銀杏」樹，適合情侶祈福。", tip: "試著喝一口靈泉鶴之井戶的水（帶鹹味），據說能延年益壽。", link: "Kushida Shrine Fukuoka" },
-                { id: 105, time: "11:30", icon: "🥖", title: "Full Full 明太子法包", type: "food", open: "10:00 - 19:00", desc: "🍴 **必吃：** 明太子法國麵包。使用國產小麥，外皮酥脆到會掉渣，內部濕潤充滿明太子醬的鹹香。\n📸 **拍照：** 剛出爐的熱氣與紙袋合照。", tip: "通常需要排隊，建議買了邊走邊吃。", link: "Full Full Hakata" },
-                { id: 106, time: "12:30", icon: "🥩", title: "石原牛 燒肉午餐", type: "food", open: "11:30 - 15:00", desc: "鹿兒島牧場直營的高級燒肉店。\n🍴 **老饕筆記：** 午市套餐 CP 值極高。肉質帶有漂亮的大理石紋路（霜降），炭火燒烤後油脂香氣逼人，入口即化。", tip: "⚠️ 務必提前預約，午餐時段非常熱門。", link: "Ishihara Gyu Fukuoka", num1: 3000, num2: 2 },
-                { id: 1065, time: "14:30", icon: "🏨", title: "回酒店 Check-in", type: "stay", open: "Check-in: 14:00", desc: "回到 Richmond Hotel 辦理正式入住手續。領取房卡，將早上的戰利品放回房間，稍微抬腳休息一下，為晚上的行程充電。", tip: "記得確認明早的早餐時間。", link: "Richmond Hotel Hakata Ekimae" },
-                { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", desc: "結合運河與建築的大型商場。\n📸 **亮點：** 每天整點的音樂噴水秀。12月會有特別的聖誕燈飾版，整面牆會有光雕投影。\n🛍️ **必逛：** Alpen Fukuoka (超大戶外用品店)、吉卜力共和國。", tip: "商場很大容易迷路，建議先看地圖。", link: "Canal City Hakata" },
-                { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", desc: "JR 博多站前廣場化身歐洲小鎮！\n📸 **必拍：** 數萬顆燈泡組成的光之樹。\n🍴 **必吃：** 只有這裡才有的熱紅酒 (Hot Wine)，每年杯子設計都不同，喝完杯子可以帶回家做紀念。", tip: "戶外風大，喝熱酒暖身剛剛好。", link: "Hakata Station Christmas Market", num1: 2000 }
+                { id: 102, time: "08:30", icon: "🧳", title: "Richmond Hotel 寄行李", type: "stay", open: "24H 接待", desc: "位於博多站筑紫口步行 5 分鐘，地理位置極佳。先寄放行李，輕裝上陣。", tip: "Check-in 時間為 14:00。", link: "Richmond Hotel Hakata Ekimae" },
+                { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 20:00", desc: "🍴 **必吃推薦：** 昭和布丁 (¥600)。口感紮實綿密，帶有微苦的焦糖大人味。", tip: "店內座位不多，建議避開上班尖峰。", link: "FUK COFFEE GION" },
+                { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", desc: "博多的總鎮守。📸 **亮點：** 全年展示的巨型「飾山笠」。", tip: "試著喝一口靈泉鶴之井戶的水（帶鹹味）。", link: "Kushida Shrine Fukuoka" },
+                { id: 105, time: "11:30", icon: "🥖", title: "Full Full 明太子法包", type: "food", open: "10:00 - 19:00", desc: "🍴 **必吃：** 明太子法國麵包。外皮酥脆到會掉渣，內部濕潤充滿明太子醬的鹹香。", tip: "建議買了邊走邊吃。", link: "Full Full Hakata" },
+                { id: 106, time: "12:30", icon: "🥩", title: "石原牛 燒肉午餐", type: "food", open: "11:30 - 15:00", desc: "鹿兒島牧場直營的高級燒肉店。午市套餐 CP 值極高。", tip: "⚠️ 務必提前預約。", link: "Ishihara Gyu Fukuoka", num1: 3000, num2: 2 },
+                { id: 1065, time: "14:30", icon: "🏨", title: "回酒店 Check-in", type: "stay", open: "Check-in: 14:00", desc: "回到 Richmond Hotel 辦理正式入住手續。", tip: "整理行李，稍作休息。", link: "Richmond Hotel Hakata Ekimae" },
+                { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", desc: "📸 **亮點：** 每天整點的音樂噴水秀。12月會有特別的聖誕燈飾版。", tip: "商場很大容易迷路，建議先看地圖。", link: "Canal City Hakata" },
+                { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", desc: "📸 **必拍：** 光之樹。🍴 **必吃：** 熱紅酒 (Hot Wine)。", tip: "戶外風大，注意保暖。", link: "Hakata Station Christmas Market", num1: 2000 }
             ]},
             { day: 2, date: "12/23 (TUE)", theme: "自駕：青蛙寺 & 由布院 ♨️", events: [
-                { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車", type: "stay", open: "08:00 - 20:00", desc: "前往博多站筑紫口的 Toyota Rent a Car 取車。\n📝 **檢查重點：** 車身刮痕確認、ETC 卡是否插入、導航設定為中文/英文。", tip: "記得帶護照、日文譯本駕照、信用卡。", link: "Toyota Rent a Car Hakata Station Chikushi" },
-                { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", desc: "境內有超過 5,000 隻青蛙石像！\n📸 **打卡位：** 正門的大張嘴青蛙、寫滿願望的青蛙繪馬牆。\n💡 **寓意：** 日文青蛙 (Kaeru) 諧音「歸來」，象徵平安歸來、恢復年輕。", tip: "這裡充滿童趣，很適合拍可愛風格的照片。", link: "Nyoirinji Frog Temple" },
-                { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", desc: "91 座紅色鳥居沿著山坡延綿而上。\n📸 **絕景：** 爬到最頂端回頭望，紅色鳥居與綠色築後平原形成強烈對比，天氣好時非常壯觀。", tip: "全是樓梯，建議穿好走的鞋子。", link: "Ukiha Inari Shrine" },
-                { id: 204, time: "15:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", desc: "位於由布院半山腰的隱世旅館。\n✨ **特色：** 遠離遊客喧囂，極度安靜。每間房都有「私人半露天溫泉」，可以邊泡湯邊看田園風景。", tip: "進旅館前先在便利商店買好零食和飲料，晚上附近沒有商店。", link: "Yufuin Poppoan", num1: 35000 },
-                { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", desc: "🍴 **料理：** 使用大分縣產的豐後牛、自家種植的米與蔬菜。料理樸實但充滿誠意，每一道都精緻美味。\n✨ **氣氛：** 在溫暖的燈光下享用私人晚餐。", tip: "請準時入座，以免錯過最佳賞味溫度。", link: "" }
+                { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車", type: "stay", open: "08:00 - 20:00", desc: "前往博多站筑紫口取車。", tip: "帶護照、日文譯本駕照、ETC卡。", link: "Toyota Rent a Car Hakata Station Chikushi" },
+                { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", desc: "5000+ 隻青蛙石像！📸 **打卡位：** 正門的大張嘴青蛙。", tip: "充滿童趣。", link: "Nyoirinji Frog Temple" },
+                { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", desc: "91 座紅色鳥居沿著山坡延綿而上。📸 **絕景：** 回頭望向平原。", tip: "全是樓梯，穿好走的鞋。", link: "Ukiha Inari Shrine" },
+                { id: 204, time: "15:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", desc: "位於由布院半山腰。每間房都有「私人半露天溫泉」。", tip: "先在便利商店買好零食飲料。", link: "Yufuin Poppoan", num1: 35000 },
+                { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", desc: "🍴 **料理：** 豐後牛、自家種植蔬菜。", tip: "請準時入座。", link: "" }
             ]},
             { day: 3, date: "12/24 (WED)", theme: "平安夜：Outlet & 牛舌 🎅", events: [
-                { id: 301, time: "07:00", icon: "🧖", title: "晨間溫泉 & 朝霧", type: "stay", open: "06:00 - 23:00", desc: "📸 **絕景：** 冬季的由布院清晨常有「朝霧」，金色的陽光穿透霧氣，如夢似幻。在房內溫泉欣賞這景色是最高享受。", tip: "早晨氣溫可能接近 0 度，出被窩要有勇氣！", link: "" },
-                { id: 302, time: "11:30", icon: "🛍️", title: "The Outlets Kitakyushu", type: "shop", open: "10:00 - 20:00", desc: "2022年開幕，北九州最大 Outlet。\n🛍️ **品牌：** BEAMS, Urban Research, snow peak 等。走道寬敞，綠化做得很好，逛起來很舒服。", tip: "這裡風很大，記得穿防風外套。", link: "THE OUTLETS KITAKYUSHU" },
-                { id: 303, time: "18:30", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", desc: "博多著名的牛舌專門店。\n🍴 **必吃：** 厚切炭火牛舌、牛舌壽喜燒。牛舌厚度驚人但口感脆嫩，炭火香氣十足。", tip: "平安夜大餐，務必提前 2 個月預約。", link: "Hakata Tanyaki Yasohachi", num1: 10000, num2: 2 },
-                { id: 304, time: "20:30", icon: "🌃", title: "中洲川端 聖誕漫步", type: "spot", open: "24H", desc: "那珂川沿岸的霓虹燈倒映在水面，加上聖誕燈飾，氣氛浪漫。\n📸 **拍照：** 站在「福博Deai橋」上往中洲方向拍，背景是著名的固力果跑跑人風格看板。", tip: "河邊風大，情侶可以互相取暖。", link: "Nakasu Kawabata" }
+                { id: 301, time: "07:00", icon: "🧖", title: "晨間溫泉 & 朝霧", type: "stay", open: "06:00 - 23:00", desc: "📸 **絕景：** 冬季晨霧。", tip: "注意保暖。", link: "" },
+                { id: 302, time: "11:30", icon: "🛍️", title: "The Outlets Kitakyushu", type: "shop", open: "10:00 - 20:00", desc: "北九州最大 Outlet。品牌：BEAMS, Urban Research 等。", tip: "風大，穿外套。", link: "THE OUTLETS KITAKYUSHU" },
+                { id: 303, time: "18:30", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", desc: "🍴 **必吃：** 厚切炭火牛舌。", tip: "務必提前預約。", link: "Hakata Tanyaki Yasohachi", num1: 10000, num2: 2 },
+                { id: 304, time: "20:30", icon: "🌃", title: "中洲川端 聖誕漫步", type: "spot", open: "24H", desc: "那珂川沿岸燈飾。", tip: "浪漫散步。", link: "Nakasu Kawabata" }
             ]},
             { day: 4, date: "12/25 (THU)", theme: "聖誕節：天神潮流 🎁", events: [
-                { id: 401, time: "09:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", desc: "福岡咖啡文化的代表店之一。\n📸 **亮點：** 鮮黃色的 Logo 杯子非常搶眼。店內充滿文青氣息，咖啡豆品質極佳。", tip: "隱藏在巷弄中，要稍微找一下。", link: "Manu Coffee Tenjin Daimyo" },
-                { id: 402, time: "14:00", icon: "🏢", title: "One Fukuoka Bldg.", type: "spot", open: "10:00 - 20:00", desc: "2025 年 4 月全新開幕的天神新地標！\n🛍️ **特色：** 匯集了九州初登場的時尚品牌與美食。頂樓有空中花園，可以俯瞰天神街景。", tip: "剛開幕人潮眾多，建議先看樓層簡介鎖定目標。", link: "Tenjin One Fukuoka Building" },
-                { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo) 散策", type: "shop", open: "11:00 - 20:00", desc: "福岡的「裏原宿」。\n🛍️ **必逛：** Supreme, Stussy, Carhartt 等潮牌，還有許多質感古著店 (2nd Street, Big Time)。巷弄裡充滿塗鴉牆，非常適合街拍。", tip: "適合在這裡買情侶裝。", link: "Daimyo Fukuoka" },
-                { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", desc: "米其林推薦的老店。\n🍴 **口感：** 博多烏龍麵的特色是「軟糯」，不是讚岐那種 Q 彈的。麵條吸滿鮮甜的高湯，配上酥脆的炸牛蒡，簡單卻銷魂。", tip: "只收現金，賣完會提早打烊。", link: "Hagakure Udon", num1: 1500 },
-                { id: 405, time: "20:30", icon: "💡", title: "警固公園 燈飾", type: "spot", open: "17:00 - 24:00", desc: "天神年輕人聖誕節的聚集地。公園內佈滿了香檳金色的燈飾，還有溜冰場，聖誕氣氛滿點。", tip: "就在三越百貨後面，逛累了剛好來休息。", link: "Kego Park" }
+                { id: 401, time: "09:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", desc: "黃色 Logo 杯子。", tip: "隱藏在巷弄。", link: "Manu Coffee Tenjin Daimyo" },
+                { id: 402, time: "14:00", icon: "🏢", title: "One Fukuoka Bldg.", type: "spot", open: "10:00 - 20:00", desc: "2025 新地標！", tip: "看樓層簡介。", link: "Tenjin One Fukuoka Building" },
+                { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo) 散策", type: "shop", open: "11:00 - 20:00", desc: "福岡裏原宿。潮牌、古著。", tip: "適合街拍。", link: "Daimyo Fukuoka" },
+                { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", desc: "🍴 **口感：** 軟糯系烏龍麵，配炸牛蒡。", tip: "只收現金。", link: "Hagakure Udon", num1: 1500 },
+                { id: 405, time: "20:30", icon: "💡", title: "警固公園 燈飾", type: "spot", open: "17:00 - 24:00", desc: "天神聖誕聚集地。", tip: "逛累了休息。", link: "Kego Park" }
             ]},
             { day: 5, date: "12/26 (FRI)", theme: "糸島海景 & 鋼彈 🌊", events: [
-                { id: 501, time: "08:30", icon: "🚗", title: "租車 (單日)", type: "stay", open: "08:00 - 20:00", desc: "前往糸島自駕一日遊。糸島交通不便，開車是最舒服的方式。", tip: "本日只需租一天，晚上 20:00 前還車。", link: "Toyota Rent a Car Hakata" },
-                { id: 502, time: "11:00", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", desc: "糸島的地標。\n📸 **絕景：** 海中純白色的鳥居，後方有兩塊巨岩用注連繩相連，象徵夫妻圓滿。藍天白雲下怎麼拍都美。", tip: "海邊風勢非常強勁，女生建議要把頭髮綁起來。", link: "Sakurai Futamigaura" },
-                { id: 503, time: "12:00", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", desc: "糸島人氣 No.1 的海景餐廳。\n🍴 **必點：** 糸島野菜義大利麵、現烤麵包。坐在戶外露台區，眼前就是無敵海景。", tip: "旁邊有知名的紅色雙層巴士 (London Bus Cafe) 可以去拍照。", link: "Bakery Restaurant Current", num1: 4000 },
-                { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", desc: "📸 **必看：** 門口矗立著 1:1 實物大 RX-93ff ν 鋼彈。\n✨ **演出：** 白天每整點頭部和手部會動；晚上 19:00 後會有牆面投影秀，非常熱血！", tip: "3樓美食街有「金子半之助」和「久留米拉麵」。", link: "LaLaport Fukuoka" }
+                { id: 501, time: "08:30", icon: "🚗", title: "租車 (單日)", type: "stay", open: "08:00 - 20:00", desc: "糸島自駕。", tip: "20:00 前還車。", link: "Toyota Rent a Car Hakata" },
+                { id: 502, time: "11:00", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", desc: "📸 **絕景：** 海中白色鳥居。", tip: "風超大。", link: "Sakurai Futamigaura" },
+                { id: 503, time: "12:00", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", desc: "無敵海景餐廳。", tip: "旁邊有倫敦巴士 Cafe。", link: "Bakery Restaurant Current", num1: 4000 },
+                { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", desc: "📸 **必看：** 1:1 鋼彈。", tip: "美食街選擇多。", link: "LaLaport Fukuoka" }
             ]},
             { day: 6, date: "12/27 (SAT)", theme: "最後衝刺 & 返程 ✈️", events: [
-                { id: 601, time: "10:00", icon: "🎁", title: "博多站 1番街", type: "shop", open: "08:00 - 21:00", desc: "最後掃貨時間！\n🛍️ **必買手信：** 博多通饅頭 (奶香濃郁)、Menbei (明太子仙貝)、努努雞 (冷炸雞，配酒絕配)。", tip: "買完直接塞進行李箱。", link: "Hakata Station 1 Bangai", num1: 5000 },
-                { id: 602, time: "11:00", icon: "🍜", title: "一蘭 本社總本店", type: "food", open: "24H 營業", desc: "一蘭拉麵的總壇！\n📸 **特色：** 整棟樓掛滿紅燈籠，非常壯觀。這裡限定使用「長方形陶瓷碗」盛裝拉麵（象徵重箱）。", tip: "建議 10:45 就去排隊，避開午餐人潮。", link: "Ichiran Main Office", num1: 2000 },
-                { id: 603, time: "14:00", icon: "🛫", title: "起飛返家", type: "stay", open: "---", desc: "搭乘地鐵前往福岡機場國際線。\n⚠️ **注意：** 福岡機場國際線安檢排隊通常較久，請務必預留充裕時間。", tip: "Check-in 後禁區內還有免稅店可以做最後衝刺。", link: "Fukuoka Airport International Terminal" }
+                { id: 601, time: "10:00", icon: "🎁", title: "博多站 1番街", type: "shop", open: "08:00 - 21:00", desc: "最後掃貨。博多通饅頭、明太子。", tip: "買完塞行李箱。", link: "Hakata Station 1 Bangai", num1: 5000 },
+                { id: 602, time: "11:00", icon: "🍜", title: "一蘭 本社總本店", type: "food", open: "24H 營業", desc: "一蘭總壇，方碗拉麵。", tip: "10:45 排隊。", link: "Ichiran Main Office", num1: 2000 },
+                { id: 603, time: "14:00", icon: "🛫", title: "起飛返家", type: "stay", open: "---", desc: "前往福岡機場國際線。", tip: "預留安檢時間。", link: "Fukuoka Airport International Terminal" }
             ]}
         ];
 
         var recommendedTodos = [
             { text: "預約機票 (福岡來回)", done: false },
-            { text: "預約住宿：Richmond Hotel (全天數 12/22-12/27)", done: false },
-            { text: "預約住宿：由布院 Poppo 庵 (Day 2 一晚)", done: false },
+            { text: "預約住宿：Richmond Hotel (全天數)", done: false },
+            { text: "預約住宿：由布院 Poppo 庵 (Day 2)", done: false },
             { text: "預約租車：Toyota Rent-a-Car (Day 2-3)", done: false },
             { text: "預約租車：Toyota Rent-a-Car (Day 5)", done: false },
             { text: "預約餐廳：石原牛 (Day 1 午餐)", done: false },
@@ -392,7 +332,6 @@
             { text: "購買旅遊保險", done: false }
         ];
 
-        // --- Logic (Same as before) ---
         var tripData = []; var todoList = []; var expenseList = []; var exchangeRate = 0.052; var currentDayIndex = 0; var isEditMode = false; var editingEventId = null;
 
         function init() {
@@ -411,7 +350,7 @@
         function saveData() { localStorage.setItem("myTripData_v2", JSON.stringify(tripData)); renderDay(currentDayIndex); }
         function saveTodo() { localStorage.setItem("myTodoList", JSON.stringify(todoList)); renderTodoList(); }
         function saveExpense() { localStorage.setItem("myExpenseList", JSON.stringify(expenseList)); localStorage.setItem("myExchangeRate", exchangeRate); renderExpenseList(); }
-        function resetData() { if(confirm("確定重置所有資料？(含行程、記帳)")) { localStorage.clear(); location.reload(); } }
+        function resetData() { if(confirm("確定重置所有資料？")) { localStorage.clear(); location.reload(); } }
 
         function renderNav() {
             var nav = document.getElementById('navScroll'); nav.innerHTML = '';
@@ -442,7 +381,7 @@
                     if(evt.num2) html += '<span>👥 ' + evt.num2 + '</span>';
                     html += '</div>';
                 }
-                html += '<div class="card-desc">' + evt.desc.replace(/\n/g, '<br>') + '</div>'; // Allow line breaks
+                html += '<div class="card-desc">' + evt.desc.replace(/\n/g, '<br>') + '</div>';
                 html += '<div class="footer-action">';
                 if(evt.tip) html += '<div class="tip-text">' + evt.tip + '</div>'; else html += '<div></div>';
                 if(evt.link && !isEditMode) {
@@ -457,20 +396,87 @@
             main.innerHTML = html;
         }
 
-        // --- Modals & Functions (Keep standard logic) ---
+        // Expense
         function openExpenseModal() { renderExpenseList(); document.getElementById('expenseModal').style.display = 'flex'; }
-        function updateRate() { exchangeRate = parseFloat(document.getElementById('exchangeRate').value); calcPreview(); saveExpense(); }
-        function calcPreview() { var jpy = parseFloat(document.getElementById('expAmount').value) || 0; var hkd = (jpy * exchangeRate).toFixed(1); document.getElementById('hkdPreview').innerText = "HK$ " + hkd; }
-        function addExpense() { var name = document.getElementById('expName').value; var amount = parseFloat(document.getElementById('expAmount').value); var cat = document.getElementById('expCat').value; if(!name || !amount) { alert("請輸入項目和金額"); return; } expenseList.push({ id: Date.now(), name: name, cat: cat, amount: amount }); document.getElementById('expName').value = ""; document.getElementById('expAmount').value = ""; document.getElementById('hkdPreview').innerText = "HK$ 0"; saveExpense(); }
-        function deleteExpense(id) { if(confirm("刪除此紀錄？")) { expenseList = expenseList.filter(function(e) { return e.id !== id; }); saveExpense(); } }
-        function renderExpenseList() { var container = document.getElementById('expenseListContainer'); var html = ''; var totalJPY = 0; if(expenseList.length === 0) html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>'; else { expenseList.forEach(item => { totalJPY += item.amount; var hkd = (item.amount * exchangeRate).toFixed(1); var catMap = { food: "食", shop: "買", stay: "行", other: "他" }; html += '<div class="expense-item"><div style="flex:1;"><span class="tag ' + item.cat + '">' + catMap[item.cat] + '</span> ' + item.name + '</div><div style="text-align:right;"><div class="expense-price">¥' + item.amount.toLocaleString() + '</div><div class="hkd-preview">$' + hkd + '</div></div><button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">刪除</button></div>'; }); } container.innerHTML = html; var totalHKD = (totalJPY * exchangeRate).toFixed(1); document.getElementById('totalDisplay').innerText = "¥ " + totalJPY.toLocaleString() + " (HK$ " + totalHKD + ")"; }
+        function updateRate() { exchangeRate = parseFloat(document.getElementById('exchangeRate').value); calcFromJPY(); saveExpense(); }
+        
+        function calcFromJPY() {
+            var jpy = parseFloat(document.getElementById('expAmount').value) || 0;
+            var hkd = (jpy * exchangeRate).toFixed(1);
+            document.getElementById('expAmountHKD').value = hkd;
+        }
+        function calcFromHKD() {
+            var hkd = parseFloat(document.getElementById('expAmountHKD').value) || 0;
+            var jpy = (hkd / exchangeRate).toFixed(0);
+            document.getElementById('expAmount').value = jpy;
+        }
 
+        function addExpense() {
+            var name = document.getElementById('expName').value; var amount = parseFloat(document.getElementById('expAmount').value); var cat = document.getElementById('expCat').value;
+            if(!name || !amount) { alert("請輸入項目和金額"); return; }
+            expenseList.push({ id: Date.now(), name: name, cat: cat, amount: amount });
+            document.getElementById('expName').value = ""; document.getElementById('expAmount').value = ""; document.getElementById('expAmountHKD').value = "";
+            saveExpense();
+        }
+        function deleteExpense(id) { if(confirm("刪除此紀錄？")) { expenseList = expenseList.filter(function(e) { return e.id !== id; }); saveExpense(); } }
+        
+        function renderExpenseList() {
+            var container = document.getElementById('expenseListContainer'); var html = ''; var totalJPY = 0;
+            var summary = { food: 0, shop: 0, trans: 0, play: 0, misc: 0 };
+            
+            if(expenseList.length === 0) html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>';
+            else {
+                expenseList.forEach(item => {
+                    totalJPY += item.amount;
+                    if(summary[item.cat] !== undefined) summary[item.cat] += item.amount;
+                    var hkd = (item.amount * exchangeRate).toFixed(1);
+                    var catMap = { food: "🍽️ 食", shop: "🛍️ 買", trans: "🚇 行", play: "🎡 玩", misc: "🧩 雜" };
+                    html += '<div class="expense-item"><div><span style="margin-right:5px;">' + catMap[item.cat] + '</span> ' + item.name + '</div><div style="text-align:right;"><div class="expense-price">¥' + item.amount.toLocaleString() + '</div><div class="hkd-sub">HK$' + hkd + '</div></div><button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">×</button></div>';
+                });
+            }
+            container.innerHTML = html;
+            
+            var totalHKD = (totalJPY * exchangeRate).toFixed(1);
+            document.getElementById('totalDisplay').innerText = "¥ " + totalJPY.toLocaleString() + " (HK$ " + totalHKD + ")";
+            
+            // Render Summary
+            var sumHtml = '';
+            var catLabel = { food: "🍽️ 食", shop: "🛍️ 買", trans: "🚇 行", play: "🎡 玩", misc: "🧩 雜" };
+            for(var k in summary) {
+                if(summary[k] > 0) {
+                    var sumHkd = (summary[k] * exchangeRate).toFixed(0);
+                    sumHtml += '<div class="summary-row"><span>' + catLabel[k] + '</span><span>¥' + summary[k].toLocaleString() + ' (HK$' + sumHkd + ')</span></div>';
+                }
+            }
+            document.getElementById('summaryContainer').innerHTML = sumHtml;
+        }
+
+        // Sync Logic
+        function openSyncModal() { document.getElementById('syncModal').style.display = 'flex'; }
+        function exportData() {
+            var allData = { trip: tripData, todo: todoList, expense: expenseList, rate: exchangeRate };
+            var code = btoa(unescape(encodeURIComponent(JSON.stringify(allData)))); // Base64 encode
+            prompt("請複製以下代碼傳給對方：", code);
+        }
+        function importData() {
+            var code = document.getElementById('importInput').value.trim();
+            if(!code) return;
+            try {
+                var json = decodeURIComponent(escape(atob(code)));
+                var allData = JSON.parse(json);
+                tripData = allData.trip; todoList = allData.todo; expenseList = allData.expense; exchangeRate = allData.rate;
+                saveData(); saveTodo(); saveExpense();
+                alert("匯入成功！資料已更新。");
+                closeModal('syncModal');
+            } catch(e) { alert("代碼格式錯誤！"); }
+        }
+
+        // Other Functions
         function toggleEditMode() { isEditMode = !isEditMode; var btn = document.getElementById('editToggleBtn'); if(isEditMode) { btn.innerText = "✅"; btn.style.background = "#51CF66"; } else { btn.innerText = "✏️"; btn.style.background = "var(--primary)"; } renderDay(currentDayIndex); }
         function openAddModal() { editingEventId = null; document.getElementById('modalTitle').innerText = "新增行程"; document.getElementById('inpHour').value = ""; document.getElementById('inpMinute').value = ""; document.getElementById('inpTitle').value = ""; document.getElementById('inpDesc').value = ""; document.getElementById('inpOpen').value = ""; document.getElementById('inpTip').value = ""; document.getElementById('inpNum1').value = ""; document.getElementById('inpNum2').value = ""; document.getElementById('eventModal').style.display = 'flex'; }
         function openEditModal(id) { editingEventId = id; var dayData = tripData[currentDayIndex]; var evt = dayData.events.find(e => e.id === id); if(!evt) return; document.getElementById('modalTitle').innerText = "修改行程"; if (evt.time && evt.time.includes(":")) { var parts = evt.time.split(":"); document.getElementById('inpHour').value = parseInt(parts[0]); document.getElementById('inpMinute').value = parseInt(parts[1]); } else { document.getElementById('inpHour').value = ""; document.getElementById('inpMinute').value = ""; } document.getElementById('inpTitle').value = evt.title; document.getElementById('inpType').value = evt.type; document.getElementById('inpOpen').value = evt.open || ""; document.getElementById('inpDesc').value = evt.desc; document.getElementById('inpTip').value = evt.tip || ""; document.getElementById('inpNum1').value = evt.num1 || ""; document.getElementById('inpNum2').value = evt.num2 || ""; document.getElementById('eventModal').style.display = 'flex'; }
         function saveEvent() { var h = document.getElementById('inpHour').value; var m = document.getElementById('inpMinute').value; var title = document.getElementById('inpTitle').value; var type = document.getElementById('inpType').value; var open = document.getElementById('inpOpen').value; var desc = document.getElementById('inpDesc').value; var tip = document.getElementById('inpTip').value; var num1 = document.getElementById('inpNum1').value; var num2 = document.getElementById('inpNum2').value; if(!title) { alert("請輸入標題"); return; } if(h === "" || m === "") { alert("請輸入時間"); return; } var timeString = String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0'); var iconMap = { food: "🍴", shop: "🛍️", spot: "📸", stay: "🚗" }; var icon = iconMap[type]; if(editingEventId) { var events = tripData[currentDayIndex].events; var evt = events.find(e => e.id === editingEventId); if(evt) { evt.time = timeString; evt.title = title; evt.type = type; evt.open = open; evt.desc = desc; evt.tip = tip; evt.icon = icon; evt.link = title; evt.num1 = num1; evt.num2 = num2; } } else { var newEvent = { id: Date.now(), time: timeString, title: title, type: type, icon: icon, open: open, desc: desc, tip: tip, link: title, num1: num1, num2: num2 }; tripData[currentDayIndex].events.push(newEvent); tripData[currentDayIndex].events.sort((a, b) => a.time.localeCompare(b.time)); } saveData(); closeModal('eventModal'); }
         function deleteEvent(id) { if(confirm("確定刪除此行程？")) { tripData[currentDayIndex].events = tripData[currentDayIndex].events.filter(e => e.id !== id); saveData(); } }
-
         function openTodoModal() { renderTodoList(); document.getElementById('todoModal').style.display = 'flex'; }
         function renderTodoList() { var container = document.getElementById('todoListContainer'); var html = ''; if(todoList.length === 0) html = '<div style="text-align:center; color:#999; margin-top:20px;">尚無待辦</div>'; else { todoList.forEach(function(item, index) { html += '<div class="todo-item"><input type="checkbox" class="todo-checkbox" ' + (item.done ? 'checked' : '') + ' onchange="toggleTodo(' + index + ')"><div class="todo-text ' + (item.done ? 'done' : '') + '">' + item.text + '</div><button class="todo-del" onclick="deleteTodo(' + index + ')">×</button></div>'; }); } container.innerHTML = html; }
         function importRecommendedTodos() { if(confirm("確定要匯入預約清單嗎？")) { var newItems = JSON.parse(JSON.stringify(recommendedTodos)); todoList = todoList.concat(newItems); saveTodo(); alert("匯入完成！"); } }
