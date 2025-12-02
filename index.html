@@ -26,17 +26,22 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding-bottom: 100px;
+            padding-bottom: 100px; /* 留給底部按鈕 */
         }
 
-        /* Header */
-        header {
-            background: var(--bg-color);
-            padding: 20px 24px 10px;
-            padding-top: max(20px, env(safe-area-inset-top));
+        /* --- Header & Nav 固定區塊 --- */
+        .top-container {
             position: sticky;
             top: 0;
             z-index: 100;
+            background: var(--bg-color); /* 確保不透明 */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03); /* 輕微陰影區隔內容 */
+        }
+
+        header {
+            padding: 15px 24px 5px;
+            padding-top: max(15px, env(safe-area-inset-top));
+            position: relative;
         }
         h1 { font-size: 24px; font-weight: 700; color: var(--primary); margin: 0; letter-spacing: 0.5px; }
         .trip-info { font-size: 13px; color: var(--text-sub); margin-top: 4px; font-weight: 500; }
@@ -51,20 +56,39 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* Nav */
+        /* --- 修正後的 Nav (可滾動) --- */
         .nav-scroll {
-            display: flex; gap: 10px; overflow-x: auto; padding: 10px 24px 20px;
-            scrollbar-width: none;
+            display: flex;
+            flex-wrap: nowrap; /* 禁止換行 */
+            overflow-x: auto; /* 開啟橫向滾動 */
+            -webkit-overflow-scrolling: touch; /* iOS 慣性滾動關鍵 */
+            gap: 12px;
+            padding: 5px 24px 15px;
+            scrollbar-width: none; /* 隱藏滾動條 Firefox */
         }
-        .nav-scroll::-webkit-scrollbar { display: none; }
+        .nav-scroll::-webkit-scrollbar { display: none; /* 隱藏滾動條 Chrome/Safari */ }
+        
         .day-tab {
-            flex: 0 0 auto; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
-            background: #EBE8E1; color: #999; border: none; transition: 0.2s;
+            flex: 0 0 auto; /* 禁止壓縮，這很重要！ */
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #EBE8E1;
+            color: #999;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap; /* 確保文字不換行 */
         }
-        .day-tab.active { background: var(--primary); color: white; transform: scale(1.05); }
+        .day-tab.active {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(158, 137, 118, 0.3);
+        }
 
         /* Main */
-        main { padding: 0 24px; max-width: 600px; margin: 0 auto; }
+        main { padding: 20px 24px; max-width: 600px; margin: 0 auto; }
         
         .day-header { margin-bottom: 24px; padding-left: 8px; border-left: 3px solid var(--accent); }
         .day-date { font-size: 20px; font-weight: 700; }
@@ -201,15 +225,18 @@
 </head>
 <body>
 
-    <header>
-        <h1>FUKUOKA 2025</h1>
-        <div class="trip-info">12.22 — 12.27 · 旅程助手</div>
-        <div class="header-actions">
-            <button class="icon-btn" onclick="resetData()" title="重置">↺</button>
-        </div>
-    </header>
+    <div class="top-container">
+        <header>
+            <h1>FUKUOKA 2025</h1>
+            <div class="trip-info">12.22 — 12.27 · 旅程助手</div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="resetData()" title="重置">↺</button>
+            </div>
+        </header>
 
-    <div class="nav-scroll" id="navScroll"></div>
+        <div class="nav-scroll" id="navScroll"></div>
+    </div>
+
     <main id="mainContent"></main>
 
     <div class="fab-container">
