@@ -3,187 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#FFF3E0">
+    <meta name="theme-color" content="#FFF8E1">
     <title>Fukuoka Trip 2025</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* --- Chip 'n Dale 橡實森林風格 --- */
+        /* --- Chip 'n Dale Theme --- */
         :root {
-            --bg-color: #FFF3E0;      /* 暖奶油色 */
-            --bg-pattern: #FFE0B2;    /* 淺橘紋路 */
-            --primary: #4E342E;       /* Chip 深褐 */
-            --secondary: #6D4C41;     /* 淺褐 */
-            --accent: #BF360C;        /* Dale 磚紅 */
-            --highlight: #FFB74D;     /* 橡實黃 */
-            --nearby-bg: #E8F5E9;     /* 淺綠 */
-            --nearby-text: #2E7D32;
-            --transport-bg: #E1F5FE;  /* 交通藍 */
-            --transport-text: #0277BD;
-            --return-bg: #F3E5F5;     /* 回程紫 */
-            --return-text: #7B1FA2;
-            --card-bg: #FFFFFF;
-            --line-color: #D7CCC8;
-            --radius: 18px;
+            --bg-color: #FFF8E1; --primary: #5D4037; --secondary: #795548;
+            --accent: #D84315; --highlight: #FFB74D; --nearby-bg: #E8F5E9;
+            --nearby-text: #2E7D32; --transport-bg: #E3F2FD; --transport-text: #0D47A1;
+            --card-bg: #FFFFFF; --line-color: #D7CCC8; --radius: 18px;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Microsoft JhengHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "Roboto", sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(var(--bg-pattern) 20%, transparent 20%), radial-gradient(var(--bg-pattern) 20%, transparent 20%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            color: var(--primary);
-            margin: 0;
-            padding-bottom: 120px;
-            line-height: 1.6;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ctext x='5' y='25' font-size='18'%3E🎄%3C/text%3E%3Ctext x='35' y='55' font-size='14'%3E🌰%3C/text%3E%3C/g%3E%3C/svg%3E");
+            color: var(--primary); margin: 0; padding-bottom: 120px; line-height: 1.6;
         }
 
         /* Layout */
-        .sticky-top-container {
-            position: sticky; top: 0; z-index: 1000;
-            background: rgba(255, 243, 224, 0.98);
-            box-shadow: 0 4px 12px rgba(62, 39, 35, 0.1);
-            border-bottom: 3px solid var(--primary);
-        }
-        header { padding: 15px 20px 5px; padding-top: max(15px, env(safe-area-inset-top)); position: relative; }
-        h1 { font-size: 24px; font-weight: 900; color: var(--primary); margin: 0; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        .sticky-top-container { position: sticky; top: 0; z-index: 1000; background: rgba(255, 248, 225, 0.98); box-shadow: 0 4px 12px rgba(62, 39, 35, 0.15); border-bottom: 3px solid var(--accent); }
+        header { padding: 15px 20px 5px; padding-top: max(15px, env(safe-area-inset-top)); }
+        h1 { font-size: 24px; font-weight: 900; color: var(--primary); margin: 0; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; text-shadow: 1px 1px 0 #FFF; }
         .trip-info { font-size: 12px; color: var(--secondary); margin-top: 4px; font-weight: 700; letter-spacing: 0.5px; }
-        .header-actions { position: absolute; right: 15px; top: 15px; display: flex; gap: 10px; padding-top: max(0px, env(safe-area-inset-top)); }
-        .icon-btn {
-            background: white; border: 2px solid var(--primary); font-size: 16px; cursor: pointer;
-            width: 40px; height: 40px; border-radius: 50%; color: var(--primary);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 2px 2px 0 var(--primary); transition: transform 0.1s;
-        }
-        .icon-btn:active { transform: translate(2px, 2px); box-shadow: none; }
-
+        .header-actions { position: absolute; right: 15px; top: 15px; }
+        .icon-btn { background: white; border: 2px solid var(--primary); font-size: 16px; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 0 var(--primary); }
+        
         /* Nav */
         .nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 10px 15px 15px; scrollbar-width: none; }
-        .day-tab {
-            flex: 0 0 auto; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 700;
-            background: white; color: var(--secondary); border: 2px solid var(--line-color); 
-            transition: all 0.2s; white-space: nowrap;
+        .day-tab { flex: 0 0 auto; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; background: white; color: var(--secondary); border: 2px solid var(--line-color); transition: all 0.2s; white-space: nowrap; }
+        .day-tab.active { background: var(--primary); color: var(--highlight); border-color: var(--primary); transform: scale(1.05); box-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+        
+        /* Main */
+        main { padding: 15px; max-width: 600px; margin: 0 auto; min-height: 80vh; }
+        
+        /* Map */
+        #day-map { 
+            width: 100%; height: 240px; 
+            border-radius: 18px; border: 2px solid var(--primary); 
+            margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            z-index: 1; background: #EEE; display: none;
         }
-        .day-tab.active { 
-            background: var(--primary); color: var(--highlight); border-color: var(--primary); 
-            transform: scale(1.05); box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        .custom-div-icon {
+            background: #BF360C; color: white; border-radius: 50%;
+            text-align: center; line-height: 24px; font-weight: bold; font-size: 14px;
+            border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Map Container (Hidden by default) */
-        #mapContainer { 
-            height: 70vh; margin: 20px 15px; border-radius: 20px; border: 4px solid var(--primary); 
-            overflow: hidden; display: none; box-shadow: 4px 4px 0 rgba(78, 52, 46, 0.2);
-        }
-        #map { width: 100%; height: 100%; }
-        .map-controls { padding: 0 20px 10px; display: none; gap: 10px; overflow-x: auto; }
-        .map-filter-btn { padding: 6px 12px; background: white; border: 1px solid var(--primary); border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; }
-        .map-filter-btn.active { background: var(--primary); color: white; }
-
-        /* Main Content */
-        main { padding: 20px 15px; max-width: 600px; margin: 0 auto; min-height: 80vh; }
-        .day-header { margin-bottom: 24px; padding-left: 12px; border-left: 6px solid var(--accent); }
-        .day-date { font-size: 20px; font-weight: 800; color: var(--primary); }
-        .day-theme { font-size: 14px; color: var(--accent); margin-top: 4px; font-weight: 700; }
+        .day-header { margin-bottom: 15px; padding-left: 12px; border-left: 6px solid var(--accent); }
+        .day-date { font-size: 20px; font-weight: 800; }
+        .essentials-box { background: #FFF9C4; color: #5D4037; padding: 12px; border-radius: 12px; margin-bottom: 25px; border: 2px dashed #FBC02D; font-size: 13px; }
+        .essentials-title { font-weight: 800; display: block; margin-bottom: 5px; color: #E65100; font-size: 14px; }
 
         /* Timeline */
         .timeline { position: relative; padding-left: 10px; }
         .timeline::before { content: ''; position: absolute; left: 6px; top: 15px; bottom: 0; width: 4px; background-color: #D7CCC8; border-radius: 2px; }
-        .event-item { position: relative; margin-bottom: 30px; padding-left: 24px; }
-        .dot { 
-            position: absolute; left: -3px; top: 5px; width: 22px; height: 22px; 
-            background: var(--highlight); border: 3px solid white; border-radius: 50%; z-index: 2; 
-            box-shadow: 0 0 0 2px var(--primary);
+        .event-item { position: relative; margin-bottom: 35px; padding-left: 24px; }
+        .dot { position: absolute; left: -3px; top: 5px; width: 22px; height: 22px; background: var(--highlight); border: 3px solid white; border-radius: 50%; z-index: 2; box-shadow: 0 0 0 2px var(--primary); }
+        .time { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 4px; display: inline-block; background: white; padding: 2px 10px; border-radius: 8px; border: 1px solid var(--primary); }
+        
+        /* Transport Info */
+        .transport-info { 
+            display: inline-block; font-size: 12px; color: var(--transport-text); 
+            background: var(--transport-bg); padding: 4px 10px; border-radius: 6px; 
+            margin-left: 8px; border: 1px solid #90CAF9; vertical-align: middle; 
+            margin-bottom: 4px; font-weight: 700;
+            white-space: normal; line-height: 1.4; max-width: 100%;
         }
-        .time { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 4px; display: inline-block; background: white; padding: 2px 8px; border-radius: 8px; border: 1px solid var(--primary); }
 
-        .transport-info {
-            display: inline-block; font-size: 11px; color: var(--transport-text); background: var(--transport-bg);
-            padding: 2px 8px; border-radius: 6px; margin-left: 8px; border: 1px solid #B3E5FC;
-            vertical-align: middle; margin-bottom: 4px; font-weight: 600;
-        }
-
-        /* Card (Fixed Height Stability) */
-        .card { 
-            background: var(--card-bg); border-radius: var(--radius); padding: 18px; 
-            box-shadow: 4px 4px 0 rgba(78, 52, 46, 0.15); 
-            border: 2px solid var(--primary); position: relative; 
-        }
-        .card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; padding-right: 50px; /* Space for absolute buttons */ }
+        /* Card */
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 18px; box-shadow: 4px 4px 0 rgba(78, 52, 46, 0.15); border: 2px solid var(--primary); position: relative; }
+        .card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; padding-right: 85px; }
         .icon-box { font-size: 26px; line-height: 1; }
-        .card-title { font-size: 17px; font-weight: 800; margin: 0; line-height: 1.4; flex: 1; color: var(--primary); }
+        .card-title { font-size: 18px; font-weight: 800; margin: 0; line-height: 1.4; flex: 1; }
+        
         .tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
         .tag { font-size: 11px; padding: 3px 8px; border-radius: 8px; font-weight: 700; border: 1px solid rgba(0,0,0,0.1); }
-        .tag.food { background: #FFECB3; color: #E65100; } 
-        .tag.shop { background: #E1BEE7; color: #4A148C; } 
-        .tag.spot { background: #B2DFDB; color: #004D40; } 
-        .tag.stay { background: #BBDEFB; color: #0D47A1; } 
-        .tag.trans { background: #E0F2F1; color: #00695C; } 
-        .tag.other { background: #F5F5F5; color: #616161; }
-
-        .info-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .open-hours, .duration-badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-block; font-weight: 600; }
-        .open-hours { color: var(--secondary); background: #F5F5F5; }
+        .tag.food { background: #FFECB3; color: #E65100; } .tag.shop { background: #E1BEE7; color: #4A148C; } .tag.spot { background: #B2DFDB; color: #004D40; } .tag.stay { background: #BBDEFB; color: #0D47A1; } 
+        
+        .info-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+        .open-hours, .duration-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; display: inline-block; font-weight: 600; line-height: 1.3; }
+        .open-hours { color: var(--secondary); background: #F5F5F5; border: 1px solid #EEE; }
         .duration-badge { color: #E65100; background: #FFF3E0; border: 1px solid #FFE0B2; }
-
-        .num-stats { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--accent); font-weight: 700; background: #FFF3E0; padding: 4px 8px; border-radius: 6px; width: fit-content; border: 1px dashed var(--accent); }
+        
+        .num-stats { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--accent); font-weight: 700; background: #FFEBEE; padding: 4px 8px; border-radius: 6px; width: fit-content; border: 1px dashed var(--accent); }
         .card-desc { font-size: 14px; color: #3E2723; margin: 0 0 10px 0; line-height: 1.7; text-align: justify; white-space: pre-wrap; }
         
-        .nearby-section {
-            background: var(--nearby-bg); padding: 10px; border-radius: 10px;
-            margin-top: 10px; font-size: 13px; color: var(--nearby-text);
-            border-left: 4px solid var(--nearby-text); white-space: pre-wrap;
-        }
+        .nearby-section { background: var(--nearby-bg); padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--nearby-text); border-left: 4px solid var(--nearby-text); white-space: pre-wrap; }
         .nearby-title { font-weight: 800; display: block; margin-bottom: 4px; }
-
-        /* Return Hotel Warning */
-        .return-section {
-            background: var(--return-bg); padding: 8px 12px; border-radius: 10px;
-            margin-top: 10px; font-size: 13px; color: var(--return-text); font-weight: 700;
-            display: flex; align-items: center; gap: 6px; border: 1px dashed var(--return-text);
-        }
-
+        .return-section { background: #F3E5F5; padding: 8px 12px; border-radius: 10px; margin-top: 10px; font-size: 13px; color: #7B1FA2; font-weight: 700; border: 1px dashed #7B1FA2; }
+        
         .footer-action { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--line-color); }
         .tip-text { font-size: 12px; color: var(--secondary); flex: 1; padding-right: 8px; font-weight: 500; }
         .map-link { text-decoration: none; font-size: 11px; font-weight: 700; color: white; background: var(--accent); padding: 4px 10px; border-radius: 12px; box-shadow: 2px 2px 0 var(--primary); }
+        
+        /* Photo */
+        .photo-area { margin-top: 10px; }
+        .photo-container { position: relative; width: 100%; max-height: 250px; overflow: hidden; border-radius: 12px; border: 2px solid #EEE; display: block; background: #FAFAFA; }
+        .photo-img { width: 100%; height: auto; object-fit: cover; display: block; }
+        .btn-del-photo { position: absolute; top: 8px; right: 8px; background: rgba(255,0,0,0.8); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; z-index: 5; }
+        #photoInput { display: none; }
 
-        /* Absolute Controls for Stability */
-        .edit-controls { 
-            display: none; 
-            position: absolute; 
-            top: 12px; 
-            right: 12px; 
-            gap: 6px; 
-            z-index: 10;
-        }
-        .edit-mode .edit-controls { display: flex; }
+        /* Controls */
+        .edit-controls { display: flex; position: absolute; top: 12px; right: 12px; gap: 6px; z-index: 10; }
         .btn-sm { font-size: 14px; padding: 4px 8px; border-radius: 8px; border: 1px solid #CCC; cursor: pointer; background: white; box-shadow: 1px 1px 0 #999; }
-        .btn-edit { color: #1565C0; } .btn-del { color: #C62828; }
-        .add-event-btn { display: none; width: 100%; padding: 15px; margin-top: 30px; background: white; border: 3px dashed var(--highlight); color: var(--secondary); border-radius: 16px; font-weight: 800; cursor: pointer; text-align: center; }
-        .edit-mode .add-event-btn { display: block; }
+        .btn-edit { color: #1565C0; } .btn-del { color: #C62828; } .btn-photo { color: #E65100; font-weight: bold; border-color: #FFE0B2; background: #FFF3E0; }
 
         /* FAB */
         .fab-container { position: fixed; bottom: 30px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 200; }
-        .fab { width: 56px; height: 56px; border-radius: 28px; border: 2px solid white; background: var(--primary); color: white; font-size: 24px; box-shadow: 4px 4px 0 rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s; }
-        .fab:active { transform: translate(2px, 2px); box-shadow: none; }
-        .fab.secondary { background: white; color: var(--primary); border: 2px solid var(--primary); }
-        .fab.money { background: var(--highlight); color: var(--primary); }
-
+        .fab { width: 56px; height: 56px; border-radius: 28px; border: 2px solid white; background: var(--primary); color: white; font-size: 24px; box-shadow: 4px 4px 0 rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .fab.money { background: var(--highlight); color: var(--primary); } 
+        .fab.shop { background: #F48FB1; color: white; } 
+        .fab.todo { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .fab.add { background: var(--accent); color: white; border: 2px solid var(--accent); }
+        
         /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(78, 52, 46, 0.7); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(78, 52, 46, 0.8); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; }
         .modal { background: #FFF; width: 90%; max-width: 400px; max-height: 85vh; border-radius: 20px; padding: 20px; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 3px solid var(--primary); }
         .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: var(--primary); text-align: center; border-bottom: 2px dashed var(--highlight); padding-bottom: 10px;}
         .form-group { margin-bottom: 15px; }
         .form-label { display: block; font-size: 13px; color: var(--secondary); margin-bottom: 6px; font-weight: 700; }
-        .form-input, .form-select { width: 100%; padding: 12px; border: 2px solid var(--line-color); border-radius: 12px; font-size: 15px; background: #FAFAFA; color: var(--primary); }
-        .btn-full { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; margin-top: 15px; font-size: 16px; box-shadow: 0 4px 0 #3E2723; transition: transform 0.1s; }
-        .btn-full:active { transform: translateY(4px); box-shadow: none; }
+        .form-input, .form-select, textarea { width: 100%; padding: 12px; border: 2px solid var(--line-color); border-radius: 12px; font-size: 15px; background: #FAFAFA; color: var(--primary); font-family: inherit; }
+        .btn-full { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; margin-top: 15px; font-size: 16px; box-shadow: 0 4px 0 #3E2723; }
         .btn-close { position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 24px; color: #AAA; }
-        
         .sync-area { width: 100%; height: 100px; padding: 10px; font-size: 12px; border: 1px solid #CCC; background: #F9F9F9; border-radius: 8px; resize: none; }
         .btn-copy { width: 100%; padding: 10px; background: #E0F7FA; color: #006064; border: 1px dashed #0097A7; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 5px; }
-
+        
+        /* Shopping List */
+        .shop-item { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #EEE; }
+        .shop-check { width: 22px; height: 22px; accent-color: #F06292; }
+        .shop-details { flex: 1; }
+        .shop-name { font-size: 12px; color: #888; font-weight: bold; }
+        .shop-text { font-size: 15px; font-weight: bold; color: var(--primary); }
+        .shop-text.done { text-decoration: line-through; color: #CCC; }
+        .shop-del { color: #EF9A9A; border: none; background: none; font-size: 20px; padding: 0 5px; }
+        
         /* Expense & Todo */
         .expense-header { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; background: var(--highlight); padding: 12px; border-radius: 12px; color: var(--primary); }
         .expense-rate-input { width: 70px; padding: 6px; border: 2px solid white; border-radius: 8px; text-align: center; font-weight: bold; color: var(--primary); }
@@ -211,20 +166,18 @@
             <div class="header-actions"><button class="icon-btn" onclick="openSyncModal()" title="同步">⇄</button></div>
         </header>
         <div class="nav-scroll" id="navScroll"></div>
-        <div class="map-controls" id="mapControls"></div>
-    </div>
-
-    <div id="mapContainer">
-        <div id="map"></div>
     </div>
 
     <main id="mainContent"></main>
 
     <div class="fab-container">
+        <button class="fab add" onclick="openAddModal()">➕</button>
+        <button class="fab shop" onclick="openShoppingModal()">🛍️</button>
         <button class="fab money" onclick="openExpenseModal()">💰</button>
         <button class="fab secondary" onclick="openTodoModal()">📝</button>
-        <button class="fab" id="editToggleBtn" onclick="toggleEditMode()">✏️</button>
     </div>
+
+    <input type="file" id="photoInput" accept="image/*">
 
     <div class="modal-overlay" id="syncModal">
         <div class="modal">
@@ -241,6 +194,16 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="shoppingModal">
+        <div class="modal">
+            <button class="btn-close" onclick="closeModal('shoppingModal')">×</button>
+            <div class="modal-title">🛍️ 伴手禮清單</div>
+            <div class="form-group"><div style="display:flex; gap:10px;"><input type="text" id="shopName" class="form-input" placeholder="給誰 (例如: 媽媽)" style="flex:1"><input type="text" id="shopItem" class="form-input" placeholder="買什麼 (例如: 藥妝)" style="flex:2"></div></div>
+            <button class="btn-full" onclick="addShopItem()">加入清單</button>
+            <div id="shoppingListContainer" style="margin-top:20px;"></div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="expenseModal">
         <div class="modal">
             <button class="btn-close" onclick="closeModal('expenseModal')">×</button>
@@ -253,7 +216,14 @@
             <div class="form-group"><label class="form-label">消費項目 & 類別</label>
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="expName" class="form-input" placeholder="例如: 伴手禮" style="flex:2">
-                    <select id="expCat" class="form-select" style="flex:1"><option value="food">🍽️ 食</option><option value="shop">🛍️ 買</option><option value="trans">🚇 行</option><option value="play">🎡 玩</option><option value="stay">🏠 住</option><option value="misc">🧩 雜</option></select>
+                    <select id="expCat" class="form-select" style="flex:1">
+                        <option value="flight_stay">✈️ 機+住</option>
+                        <option value="food">🍽️ 食</option>
+                        <option value="shop">🛍️ 買</option>
+                        <option value="trans">🚇 行</option>
+                        <option value="play">🎡 玩</option>
+                        <option value="misc">🧩 雜</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group"><label class="form-label">金額 (自動換算)</label>
@@ -282,29 +252,10 @@
                 </div>
             </div>
             <div class="form-group"><label class="form-label">標題</label><input type="text" id="inpTitle" class="form-input"></div>
-            
-            <div style="display:flex; gap:10px;">
-                <div class="form-group" style="flex:1;"><label class="form-label">類別</label>
-                    <select id="inpType" class="form-select">
-                        <option value="food">美食 🍴</option><option value="shop">購物 🛍️</option><option value="spot">景點 📸</option><option value="stay">交通/宿 🚗</option>
-                    </select>
-                </div>
-                <div class="form-group" style="flex:1;"><label class="form-label">營業時間</label><input type="text" id="inpOpen" class="form-input" placeholder="10:00 - 20:00"></div>
-            </div>
-
-            <div style="display:flex; gap:10px;">
-                <div class="form-group" style="flex:1;"><label class="form-label">🚀 交通方式</label><input type="text" id="inpTransport" class="form-input" placeholder="例如: 步行5分"></div>
-                <div class="form-group" style="flex:1;"><label class="form-label">⏱️ 停留時間</label><input type="text" id="inpDuration" class="form-input" placeholder="例如: 1小時"></div>
-            </div>
-
-            <div style="display:flex; gap:10px;">
-                <div class="form-group" style="flex:1;"><label class="form-label">預算(¥)</label><input type="number" id="inpNum1" class="form-input"></div>
-                <div class="form-group" style="flex:1;"><label class="form-label">人數/其他</label><input type="number" id="inpNum2" class="form-input"></div>
-            </div>
+            <div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label class="form-label">類別</label><select id="inpType" class="form-select"><option value="food">美食 🍴</option><option value="shop">購物 🛍️</option><option value="spot">景點 📸</option><option value="stay">交通/宿 🚗</option></select></div><div class="form-group" style="flex:1;"><label class="form-label">營業時間</label><input type="text" id="inpOpen" class="form-input" placeholder="10:00 - 20:00"></div></div>
+            <div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label class="form-label">🚀 交通方式</label><input type="text" id="inpTransport" class="form-input" placeholder="例如: 步行5分"></div><div class="form-group" style="flex:1;"><label class="form-label">⏱️ 停留時間</label><input type="text" id="inpDuration" class="form-input" placeholder="例如: 1小時"></div></div>
+            <div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label class="form-label">預算(¥)</label><input type="number" id="inpNum1" class="form-input"></div><div class="form-group" style="flex:1;"><label class="form-label">人數/其他</label><input type="number" id="inpNum2" class="form-input"></div></div>
             <div class="form-group"><label class="form-label">詳細說明 (介紹/亮點)</label><textarea id="inpDesc" class="form-input" rows="4"></textarea></div>
-            
-            <div class="form-group"><label class="form-label">🛏️ 回程交通 (僅最後一站顯示)</label><input type="text" id="inpReturn" class="form-input" placeholder="例如: 步行 5 分鐘回飯店"></div>
-
             <div class="form-group"><label class="form-label">📍 附近順遊</label><textarea id="inpNearby" class="form-input" rows="2"></textarea></div>
             <div class="form-group"><label class="form-label">貼士</label><input type="text" id="inpTip" class="form-input"></div>
             <button class="btn-full" onclick="saveEvent()">儲存</button>
@@ -316,315 +267,295 @@
             <button class="btn-close" onclick="closeModal('todoModal')">×</button>
             <div class="modal-title">待辦清單</div>
             <button class="btn-import" onclick="importRecommendedTodos()">📥 匯入預約建議清單</button>
-            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-                <input type="text" id="newTodoInput" class="form-input" placeholder="新增待辦...">
-                <button onclick="addTodo()" style="background: var(--primary); color: white; border: none; border-radius: 12px; width: 45px; font-size: 20px;">+</button>
-            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;"><input type="text" id="newTodoInput" class="form-input" placeholder="新增待辦..."><button onclick="addTodo()" style="background: var(--primary); color: white; border: none; border-radius: 12px; width: 45px; font-size: 20px;">+</button></div>
             <div id="todoListContainer"></div>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <script>
-        // --- Data (Fully updated with Transport, Duration, Lat/Lng for ALL) ---
+        // Global Vars
+        window.tripData = []; window.todoList = []; window.expenseList = []; window.shoppingList = []; window.exchangeRate = 0.052;
+        window.currentDayIndex = 0; window.editingEventId = null; window.map = null;
+
         var defaultData = [
-            { day: 1, date: "12/22 (MON)", theme: "博多聖誕 & 市區漫遊 🎄", events: [
-                { id: 101, time: "07:20", icon: "✈️", title: "抵達福岡機場", type: "stay", open: "05:30 - 22:30", transport: "直達", duration: "1小時", lat: 33.5859, lng: 130.4507, desc: "福岡機場 (FUK) 被譽為「日本最方便的機場」。下機後請沿著藍色指示牌搭乘免費接駁車前往國內線航廈，再轉乘地鐵空港線，僅需 5-10 分鐘即可抵達博多站。機場內也有許多九州限定甜點，建議最後一天再買，今天先輕鬆入市區。", nearby: "1. 國內線航廈「拉麵滑走路」\n2. 展望台 (看飛機起降)", tip: "建議先在機場買好交通 IC 卡 (Suica/ICOCA)。", link: "Fukuoka Airport" },
+            { day: 1, date: "12/22 (一) Day 1", theme: "博多聖誕 & 市區漫遊 🎄", essentials: "🎒 隨身包：護照、錢包、IC 卡、行動電源。", events: [
+                { id: 101, time: "07:20", icon: "✈️", title: "抵達福岡機場", type: "stay", open: "05:30 - 22:30", transport: "🚇 地鐵+步行 20分", duration: "1小時", lat: 33.5859, lng: 130.4507, desc: "福岡機場 (FUK) 被譽為「日本最方便的機場」。下機後請沿著藍色指示牌搭乘免費接駁車前往國內線航廈，再轉乘地鐵空港線，僅需 5-10 分鐘即可抵達博多站。", nearby: "1. 國內線航廈「拉麵滑走路」\n2. 展望台 (看飛機起降)", tip: "建議先在機場買好交通 IC 卡 (Suica/ICOCA)。", link: "Fukuoka Airport" },
                 { id: 102, time: "08:30", icon: "🧳", title: "Richmond Hotel 寄行李", type: "stay", open: "24H 接待", transport: "🚇 地鐵 6分", duration: "15分鐘", lat: 33.5900, lng: 130.4230, desc: "位於博多站筑紫口步行約 5 分鐘，地理位置極佳。飯店大廳明亮，服務人員親切。先寄放行李，拿取號碼牌，就能輕裝上陣開始第一天的行程！", nearby: "1. Yodobashi Camera (電器/扭蛋)\n2. 博多站筑紫口美食街", tip: "Check-in 時間為 14:00。", link: "Richmond Hotel Hakata Ekimae" },
-                { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 20:00", transport: "🚶 步行 8分", duration: "45分鐘", lat: 33.5940, lng: 130.4150, desc: "這是一間以「旅行」為主題的工業風咖啡廳。\n🍴 **必吃推薦：** 昭和布丁 (¥600)。口感介於硬布丁與綿密布丁之間，蛋香濃郁，焦糖帶有一絲成熟的苦味，上方插著可愛的飛機小旗幟，非常吸睛。\n📸 **拍照：** 門口地板上的 FUK logo 是必拍打卡位。", nearby: "1. 東長寺 (步行3分)\n2. 承天寺 (步行5分)", tip: "店內座位不多，建議避開上班尖峰。", link: "FUK COFFEE GION" },
-                { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", transport: "🚶 步行 5分", duration: "45分鐘", lat: 33.5930, lng: 130.4105, desc: "博多的總鎮守，當地人暱稱「O-Kushida-san」。\n📸 **亮點：** 這裡全年展示著博多祇園山笠祭使用的巨型「飾山笠」，高達 10 公尺，細節精緻，非常壯觀。神社內還有一棵「夫婦銀杏」，適合情侶祈求感情長久。", nearby: "1. 川端通商店街 (就在旁邊)\n2. 博多町家故鄉館", tip: "試著喝一口靈泉鶴之井戶的水（帶鹹味），據說能延年益壽。", link: "Kushida Shrine Fukuoka" },
+                { id: 103, time: "09:30", icon: "🍮", title: "FUK COFFEE GION", type: "food", open: "08:00 - 20:00", transport: "🚶 步行 8分", duration: "45分鐘", lat: 33.5940, lng: 130.4150, desc: "以「旅行」為主題的工業風咖啡廳。\n🍴 **必吃推薦：** 昭和布丁 (¥600)。口感介於硬布丁與綿密布丁之間，蛋香濃郁，焦糖帶有一絲成熟的苦味。", nearby: "1. 東長寺 (步行3分)\n2. 承天寺 (步行5分)", tip: "店內座位不多，建議避開上班尖峰。", link: "FUK COFFEE GION" },
+                { id: 104, time: "10:30", icon: "⛩️", title: "櫛田神社", type: "spot", open: "04:00 - 22:00", transport: "🚶 步行 5分", duration: "45分鐘", lat: 33.5930, lng: 130.4105, desc: "博多的總鎮守，當地人暱稱「O-Kushida-san」。\n📸 **亮點：** 這裡全年展示著博多祇園山笠祭使用的巨型「飾山笠」，高達 10 公尺，細節精緻，非常壯觀。神社內還有一棵「夫婦銀杏」，適合情侶祈求感情長久。", nearby: "1. 川端通商店街 (就在旁邊)\n2. 博多町家故鄉館", tip: "試著喝一口靈泉鶴之井戶的水（帶鹹味）。", link: "Kushida Shrine Fukuoka" },
                 { id: 105, time: "11:30", icon: "🥖", title: "Full Full 明太子法包", type: "food", open: "10:00 - 19:00", transport: "🚶 步行 6分", duration: "15分鐘", lat: 33.5935, lng: 130.4110, desc: "福岡超人氣麵包店！\n🍴 **必吃：** 明太子法國麵包。使用國產小麥製作，外皮酥脆到會掉渣，內部濕潤充滿明太子醬的鹹香與微辣，熱騰騰出爐時最美味。", nearby: "1. 櫛田神社前\n2. 冷泉公園", tip: "通常需要排隊，建議買了直接在附近享用。", link: "Full Full Hakata" },
-                { id: 106, time: "12:30", icon: "🥩", title: "石原牛 燒肉午餐", type: "food", open: "11:30 - 15:00", transport: "🚶 步行 12分", duration: "90分鐘", lat: 33.5945, lng: 130.4050, desc: "鹿兒島牧場直營的高級燒肉店，午市套餐 CP 值極高。\n🍴 **口感：** 肉質帶有美麗的大理石紋路（霜降），炭火燒烤後油脂香氣逼人，入口即化，搭配店家特製醬汁更是絕配。", nearby: "1. 福岡亞洲美術館\n2. 博多座 (劇場)", tip: "⚠️ 務必提前預約，午餐時段非常熱門。", link: "Ishihara Gyu Fukuoka", num1: 3000, num2: 2 },
+                { id: 106, time: "12:30", icon: "🥩", title: "石原牛 燒肉午餐", type: "food", open: "11:30 - 15:00", transport: "🚶 步行 12分", duration: "90分鐘", lat: 33.5945, lng: 130.4050, desc: "鹿兒島牧場直營的高級燒肉店，午市套餐 CP 值極高。\n🍴 **五感體驗：** 肉質帶有美麗的大理石紋路（霜降），炭火燒烤後油脂香氣逼人，入口即化，搭配店家特製醬汁更是絕配。", nearby: "1. 福岡亞洲美術館\n2. 博多座 (劇場)", tip: "⚠️ 務必提前預約，午餐時段非常熱門。", link: "Ishihara Gyu Fukuoka", num1: 8000, num2: 2 },
                 { id: 1065, time: "14:30", icon: "🏨", title: "回酒店 Check-in", type: "stay", open: "Check-in: 14:00", transport: "🚇 地鐵 5分", duration: "60分鐘", lat: 33.5900, lng: 130.4230, desc: "回到 Richmond Hotel 辦理正式入住手續，領取房卡。將早上的戰利品放回房間，稍微抬腳休息一下，為晚上的行程充電。", nearby: "1. 博多站頂樓燕子廣場\n2. 阪急百貨", tip: "記得確認明早的早餐時間。", link: "Richmond Hotel Hakata Ekimae" },
-                { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", transport: "🚶 步行 12分", duration: "3小時", lat: 33.5898, lng: 130.4108, desc: "結合運河與建築的大型複合式商場。\n📸 **亮點：** 每天整點的音樂噴水秀。12月會有特別的聖誕燈飾版，整面牆會有光雕投影，非常浪漫。\n🛍️ **必逛：** Alpen Fukuoka (超大戶外用品店)、吉卜力共和國。", nearby: "1. 中洲屋台街 (晚餐前去)\n2. 住吉神社", tip: "商場很大容易迷路，建議先看地圖。", link: "Canal City Hakata" },
-                { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", transport: "🚶 步行 10分", duration: "1.5小時", lat: 33.5902, lng: 130.4207, desc: "JR 博多站前廣場化身歐洲小鎮！\n📸 **必拍：** 數萬顆燈泡組成的巨大光之樹。\n🍴 **必吃：** 只有這裡才有的熱紅酒 (Hot Wine) 與歐式香腸，每年杯子設計都不同，喝完杯子可以帶回家做紀念。", nearby: "1. KITTE博多 (天使郵筒)\n2. AMU Plaza", returnInfo: "🛏️ 回住宿：步行 5 分鐘", tip: "戶外風大，喝熱酒暖身剛剛好。", link: "Hakata Station Christmas Market", num1: 2000 }
+                { id: 107, time: "16:00", icon: "🛍️", title: "Canal City 運河城", type: "shop", open: "10:00 - 21:00", transport: "🚶 步行 12分", duration: "3小時", lat: 33.5898, lng: 130.4108, desc: "結合運河與建築的大型複合式商場，色彩繽紛。\n📸 **亮點：** 每天整點的音樂噴水秀。12月會有特別的聖誕燈飾版，整面牆會有光雕投影，非常浪漫。\n🛍️ **必逛：** Alpen Fukuoka (超大戶外用品店)、吉卜力共和國、Uniqlo 旗艦店。", nearby: "1. 中洲屋台街 (晚餐前去)\n2. 住吉神社", tip: "商場很大容易迷路，建議先看地圖。", link: "Canal City Hakata" },
+                { id: 108, time: "20:00", icon: "🍷", title: "博多聖誕市集", type: "spot", open: "16:45 - 23:00", transport: "🚶 步行 10分", duration: "1.5小時", lat: 33.5902, lng: 130.4207, desc: "JR 博多站前廣場化身歐洲小鎮！數萬顆燈泡組成的巨大光之樹是福岡冬天的象徵。\n🍴 **必吃：** 只有這裡才有的熱紅酒 (Hot Wine) 與歐式香腸，每年杯子設計都不同，喝完杯子可以帶回家做紀念。", nearby: "1. KITTE博多 (天使郵筒)\n2. AMU Plaza", returnInfo: "🛏️ 回住宿：步行 5 分鐘", tip: "戶外風大，喝熱酒暖身剛剛好。", link: "Hakata Station Christmas Market", num1: 5000 }
             ]},
-            { day: 2, date: "12/23 (TUE)", theme: "自駕：青蛙寺 & 由布院 ♨️", events: [
-                { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車 (福岡機場)", type: "stay", open: "08:00 - 20:00", transport: "🚇 地鐵 15分", duration: "30分鐘", lat: 33.5800, lng: 130.4500, desc: "前往 **Toyota Rent a Car 福岡機場店** 取車。\n📝 **檢查重點：** 車身刮痕確認、ETC 卡是否插入、導航設定為中文/英文。", nearby: "---", tip: "記得帶護照、日文譯本駕照、ETC卡。", link: "Toyota Rent a Car Fukuoka Airport" },
-                { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", transport: "🚗 車程 50分", duration: "45分鐘", lat: 33.4200, lng: 130.5500, desc: "境內有超過 5,000 隻青蛙石像！\n📸 **打卡位：** 正門的大張嘴青蛙、寫滿願望的青蛙繪馬牆。\n💡 **寓意：** 日文青蛙 (Kaeru) 諧音「歸來」，象徵平安歸來、恢復年輕。", nearby: "1. Pain Nest (超人氣麵包店)\n2. Micoana (彩虹蛋糕)", tip: "這裡充滿童趣，很適合拍可愛風格的照片。", link: "Nyoirinji Frog Temple" },
-                { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", transport: "🚗 車程 25分", duration: "60分鐘", lat: 33.3200, lng: 130.7500, desc: "91 座紅色鳥居沿著山坡延綿而上。\n📸 **絕景：** 爬到最頂端回頭望，紅色鳥居與綠色築後平原形成強烈對比，天氣好時非常壯觀。", nearby: "1. 道之驛 Ukiha (買水果)\n2. 筑後川溫泉", tip: "全是樓梯，建議穿好走的鞋子。", link: "Ukiha Inari Shrine" },
-                { id: 2035, time: "13:30", icon: "🍱", title: "日田豆田町 (午餐)", type: "food", open: "10:00 - 17:00", transport: "🚗 車程 30分", duration: "90分鐘", lat: 33.3250, lng: 130.9300, desc: "有「九州小京都」之稱的懷舊街道。\n🍴 **必吃：** 日田炒麵 (想夫恋) 或 鰻魚飯 (千屋)。這裡的鰻魚飯是「日田まぶし」，可以三吃，非常有名。\n📸 **拍照：** 充滿江戶時代風情的街道建築。", nearby: "1. 薰長酒造 (清酒試飲)\n2. 木屐資料館", tip: "吃飽後可以逛逛木屐店，是當地名產。", link: "Mameda-machi" },
-                { id: 204, time: "16:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", transport: "🚗 車程 50分", duration: "---", lat: 33.2500, lng: 131.3500, desc: "位於由布院半山腰的隱世旅館。\n✨ **特色：** 遠離遊客喧囂，極度安靜。每間房都有「私人半露天溫泉」，可以邊泡湯邊看田園風景。", nearby: "1. 金鱗湖 (開車10分)\n2. 湯之坪街道", tip: "進旅館前先在便利商店買好零食和飲料，晚上附近沒有商店。", link: "Yufuin Poppoan", num1: 35000 },
-                { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", transport: "旅館內", duration: "1.5小時", lat: 33.2500, lng: 131.3500, desc: "🍴 **料理：** 使用大分縣產的豐後牛、自家種植的米與蔬菜。料理樸實但充滿誠意，每一道都精緻美味。\n✨ **氣氛：** 在溫暖的燈光下享用私人晚餐。", nearby: "---", returnInfo: "🛏️ 回住宿：已在旅館內", tip: "請準時入座，以免錯過最佳賞味溫度。", link: "" }
+            { day: 2, date: "12/23 (二) Day 2", theme: "自駕：青蛙寺 & 由布院 ♨️", essentials: "🎒 今日準備：護照、日文譯本駕照、信用卡、保暖外套、水與零食。", events: [
+                { id: 201, time: "09:00", icon: "🚗", title: "Toyota 取車 (福岡機場)", type: "stay", open: "08:00 - 20:00", transport: "🚇 地鐵 15分", duration: "30分鐘", lat: 33.5800, lng: 130.4500, desc: "前往 **Toyota Rent a Car 福岡機場店** 取車。\n📝 **檢查重點：** 車身刮痕確認、ETC 卡是否插入、導航設定為中文/英文。\n⚠️ 第一次右駕請慢行，雨刷和方向燈位置是相反的喔！", nearby: "---", tip: "記得帶護照、日文譯本駕照、ETC卡。", link: "Toyota Rent a Car Fukuoka Airport", num1: 25000 },
+                { id: 202, time: "10:30", icon: "🐸", title: "如意輪寺 (蛙寺)", type: "spot", open: "06:00 - 17:00", transport: "🚗 開車 50分", duration: "45分鐘", lat: 33.4200, lng: 130.5500, desc: "這是一間充滿童趣的寺廟，境內有超過 5,000 隻青蛙石像！\n📸 **打卡位：** 正門的大張嘴青蛙、寫滿願望的青蛙繪馬牆。\n💡 **寓意：** 日文青蛙 (Kaeru) 諧音「歸來」，象徵平安歸來、恢復年輕、失去的東西回來。", nearby: "1. Pain Nest (超人氣麵包店)\n2. Micoana (彩虹蛋糕)", tip: "這裡很適合拍可愛風格的照片。", link: "Nyoirinji Frog Temple" },
+                { id: 203, time: "12:00", icon: "⛩️", title: "浮羽稻荷神社", type: "spot", open: "24H 開放", transport: "🚗 開車 25分", duration: "60分鐘", lat: 33.3200, lng: 130.7500, desc: "IG 爆紅景點！91 座紅色鳥居沿著山坡延綿而上，彷彿通往天空。\n📸 **絕景：** 爬到最頂端回頭望，紅色鳥居與綠色築後平原形成強烈對比，天氣好時非常壯觀。", nearby: "1. 道之驛 Ukiha (買水果)\n2. 筑後川溫泉", tip: "全是樓梯，建議穿好走的鞋子。", link: "Ukiha Inari Shrine" },
+                { id: 2035, time: "13:30", icon: "🍱", title: "日田豆田町 (午餐)", type: "food", open: "10:00 - 17:00", transport: "🚗 開車 30分", duration: "90分鐘", lat: 33.3250, lng: 130.9300, desc: "有「九州小京都」之稱的懷舊街道，保留了許多江戶時代的建築。\n🍴 **必吃：** 日田炒麵 (想夫恋) 口感焦脆，或 鰻魚飯 (千屋)。這裡的鰻魚飯是「日田まぶし」，可以三吃，非常有名。", nearby: "1. 薰長酒造 (清酒試飲)\n2. 木屐資料館", tip: "吃飽後可以逛逛木屐店，是當地名產。", link: "Mameda-machi", num1: 6000 },
+                { id: 204, time: "16:00", icon: "🏨", title: "入住：Poppo 庵", type: "stay", open: "Check-in: 15:00", transport: "🚗 開車 50分", duration: "---", lat: 33.2500, lng: 131.3500, desc: "位於由布院半山腰的隱世旅館，周圍被田園包圍。\n✨ **特色：** 遠離遊客喧囂，極度安靜。每間房都有「私人半露天溫泉」，可以邊泡湯邊看由布岳風景，享受兩人世界。", nearby: "1. 金鱗湖 (開車10分)\n2. 湯之坪街道", tip: "進旅館前先在便利商店買好零食和飲料，晚上附近沒有商店。", link: "Yufuin Poppoan", num1: 50000 },
+                { id: 205, time: "18:00", icon: "🍱", title: "懷石晚餐", type: "food", open: "18:00 / 18:30", transport: "旅館內", duration: "1.5小時", lat: 33.2500, lng: 131.3500, desc: "🍴 **料理：** 使用大分縣產的豐後牛、自家種植的米與蔬菜。料理樸實但充滿誠意，每一道都精緻美味。\n✨ **氣氛：** 在溫暖的燈光下享用私人晚餐，是旅程中的高光時刻。", nearby: "---", returnInfo: "🛏️ 回住宿：已在旅館內", tip: "請準時入座，以免錯過最佳賞味溫度。", link: "" }
             ]},
-            { day: 3, date: "12/24 (WED)", theme: "平安夜：Outlet & 門司港 🎅", events: [
+            { day: 3, date: "12/24 (三) Day 3", theme: "平安夜：Outlet 購物日 🎅", essentials: "🎒 今日準備：空行李箱 (車上)、防風外套、購物清單。", events: [
                 { id: 301, time: "07:00", icon: "🧖", title: "晨間溫泉 & 朝霧", type: "stay", open: "06:00 - 23:00", transport: "房內", duration: "45分鐘", lat: 33.2500, lng: 131.3500, desc: "📸 **絕景：** 冬季的由布院清晨常有「朝霧」，金色的陽光穿透霧氣，如夢似幻。在房內溫泉欣賞這景色是最高享受。", nearby: "---", tip: "早晨氣溫可能接近 0 度，出被窩要有勇氣！", link: "" },
-                { id: 3015, time: "11:30", icon: "🚂", title: "門司港 Retro (午餐)", type: "spot", open: "全日", transport: "🚗 車程 1.5小時", duration: "2小時", lat: 33.9450, lng: 130.9600, desc: "充滿大正浪漫風情的港口城市。\n🍴 **必吃：** 燒咖哩 (Yaki Curry)。香濃咖哩加上起司焗烤，非常適合冬天。\n📸 **拍照：** 門司港車站 (復古站舍)、香蕉人雕像、藍翼門司吊橋。", nearby: "1. 九州鐵道紀念館\n2. 海峽Plaza (買雜貨)", tip: "如果是周未，還可以搭乘復古觀光列車。", link: "Mojiko Retro" },
-                { id: 302, time: "14:00", icon: "🛍️", title: "The Outlets Kitakyushu", type: "shop", open: "10:00 - 20:00", transport: "🚗 車程 30分", duration: "3小時", lat: 33.8700, lng: 130.8000, desc: "2022年開幕，北九州最大 Outlet。\n🛍️ **品牌：** BEAMS, Urban Research, snow peak 等。走道寬敞，綠化做得很好，逛起來很舒服，還有大型 AEON 超市可以買草莓。", nearby: "1. AEON Mall 八幡東 (有天橋連接)\n2. 北九州科學館", tip: "這裡風很大，記得穿防風外套。", link: "THE OUTLETS KITAKYUSHU" },
-                { id: 3025, time: "18:00", icon: "🚘", title: "還車 (Toyota 機場店)", type: "stay", open: "08:00 - 20:00", transport: "🚗 開車 1小時", duration: "15分鐘", lat: 33.5800, lng: 130.4500, desc: "前往 Toyota Rent a Car **福岡機場店** 還車。\n📝 **注意：** 請記得在附近加油站加滿油 (Full Tank)，並檢查車上是否有遺留物品。", nearby: "---", tip: "還車後搭乘免費接駁車回國內線，再搭地鐵回博多。", link: "Toyota Rent a Car Fukuoka Airport" },
-                { id: 303, time: "19:00", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", transport: "🚇 地鐵回博多", duration: "90分鐘", lat: 33.5870, lng: 130.4190, desc: "博多著名的牛舌專門店。\n🍴 **必吃：** 厚切炭火牛舌、牛舌壽喜燒。牛舌厚度驚人但口感脆嫩，炭火香氣十足。", nearby: "1. 住吉神社\n2. 樂水園", tip: "平安夜大餐，務必提前 2 個月預約。", link: "Hakata Tanyaki Yasohachi", num1: 10000, num2: 2 },
+                { id: 3015, time: "09:30", icon: "🚗", title: "退房 & 出發", type: "stay", open: "Check-out 10:00", transport: "🚗 開車", duration: "---", desc: "辦理退房手續，準備前往北九州。\n路程較長，建議先上個廁所，設定好導航。", nearby: "---", tip: "檢查有沒有遺留物品。", link: "" },
+                { id: 302, time: "11:30", icon: "🛍️", title: "The Outlets Kitakyushu (午餐+購物)", type: "shop", open: "10:00 - 20:00", transport: "🚗 開車 1.5小時", duration: "5.5小時", lat: 33.8700, lng: 130.8000, desc: "2022年開幕，北九州最大 Outlet。\n🍴 **午餐推薦：** 園區內美食街有「極樂炸豬排」、「海鮮丼 角島」、「Lemon Steak」等多種選擇，逛累了直接吃。\n🛍️ **品牌：** BEAMS, Urban Research, snow peak 等。還有大型 AEON 超市可以買草莓晚上吃。", nearby: "1. AEON Mall 八幡東\n2. 北九州科學館", tip: "這裡風很大，記得穿防風外套。", link: "THE OUTLETS KITAKYUSHU", num1: 5000 },
+                { id: 3025, time: "18:00", icon: "🚘", title: "還車 (Toyota 機場店)", type: "stay", open: "08:00 - 20:00", transport: "🚗 開車 1小時", duration: "15分鐘", lat: 33.5800, lng: 130.4500, desc: "前往 Toyota Rent a Car **福岡機場店** 還車。\n📝 **注意：** 請記得在附近加油站加滿油 (Full Tank)。工作人員會檢查車身和油表。", nearby: "---", tip: "還車後搭乘免費接駁車回國內線，再搭地鐵回博多。", link: "Toyota Rent a Car Fukuoka Airport" },
+                { id: 303, time: "19:00", icon: "👅", title: "YASOHACHI 牛舌", type: "food", open: "17:00 - 23:00", transport: "🚇 地鐵回博多", duration: "90分鐘", lat: 33.5870, lng: 130.4190, desc: "博多著名的牛舌專門店，店內氣氛熱鬧溫馨。\n🍴 **必吃：** 厚切炭火牛舌、牛舌壽喜燒。牛舌厚度驚人但口感脆嫩，炭火香氣十足，配上生啤絕配。", nearby: "1. 住吉神社\n2. 樂水園", tip: "平安夜大餐，務必提前 2 個月預約。", link: "Hakata Tanyaki Yasohachi", num1: 12000, num2: "需預約" },
                 { id: 304, time: "21:00", icon: "🌃", title: "中洲川端 聖誕漫步", type: "spot", open: "24H", transport: "🚶 步行 10分", duration: "45分鐘", lat: 33.5930, lng: 130.4080, desc: "那珂川沿岸的霓虹燈倒映在水面，加上聖誕燈飾，氣氛浪漫。\n📸 **拍照：** 站在「福博Deai橋」上往中洲方向拍，背景是著名的固力果跑跑人風格看板。", nearby: "1. 唐吉訶德 中洲店\n2. 一蘭總店", returnInfo: "🛏️ 回住宿：步行/計程車 10 分鐘", tip: "河邊風大，情侶可以互相取暖。", link: "Nakasu Kawabata" }
             ]},
-            { day: 4, date: "12/25 (THU)", theme: "聖誕節：天神潮流 🎁", events: [
-                { id: 401, time: "09:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", transport: "🚇 地鐵 10分", duration: "30分鐘", lat: 33.5850, lng: 130.3950, desc: "福岡咖啡文化的代表店之一。\n📸 **亮點：** 鮮黃色的 Logo 杯子非常搶眼。店內充滿文青氣息，咖啡豆品質極佳。", nearby: "1. Bic Camera 天神\n2. 警固神社", tip: "隱藏在巷弄中，要稍微找一下。", link: "Manu Coffee Tenjin Daimyo" },
+            { day: 4, date: "12/25 (四) Day 4", theme: "聖誕節：太宰府 & 天神 🎁", essentials: "🎒 今日準備：好走的鞋、充滿電的相機。", events: [
+                { id: 400, time: "09:00", icon: "⛩️", title: "太宰府天滿宮", type: "spot", open: "06:30 - 18:30", transport: "🚇 西鐵 30分", duration: "2小時", lat: 33.5215, lng: 130.5348, desc: "福岡必去景點，供奉學問之神，通往本殿的表參道充滿特色小店。\n🍴 **必吃：** 梅枝餅 (剛烤好外皮酥脆內餡燙口)。\n📸 **拍照：** 表參道星巴克 (隈研吾設計，木頭交錯結構)。", nearby: "1. 九州國立博物館\n2. 竈門神社 (結緣名所)", tip: "從西鐵天神站搭乘「旅人號」觀光列車，車廂有特色圖案。", link: "Dazaifu Tenmangu" },
+                { id: 401, time: "12:30", icon: "☕", title: "Manu Coffee", type: "food", open: "10:00 - 24:00", transport: "🚇 西鐵回天神", duration: "30分鐘", lat: 33.5850, lng: 130.3950, desc: "回到天神，先喝杯咖啡休息一下。福岡咖啡文化的代表店之一。\n📸 **亮點：** 鮮黃色的 Logo 杯子非常搶眼。店內充滿文青氣息，咖啡豆品質極佳。", nearby: "1. Bic Camera 天神\n2. 警固神社", tip: "隱藏在巷弄中，要稍微找一下。", link: "Manu Coffee Tenjin Daimyo" },
                 { id: 402, time: "14:00", icon: "🏢", title: "One Fukuoka Bldg.", type: "spot", open: "10:00 - 20:00", transport: "🚶 步行 5分", duration: "1.5小時", lat: 33.5900, lng: 130.4000, desc: "2025 年 4 月全新開幕的天神新地標！\n🛍️ **特色：** 匯集了九州初登場的時尚品牌與美食。頂樓有空中花園，可以俯瞰天神街景。", nearby: "1. 天神地下街\n2. 岩田屋", tip: "剛開幕人潮眾多，建議先看樓層簡介鎖定目標。", link: "Tenjin One Fukuoka Building" },
-                { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo) 散策", type: "shop", open: "11:00 - 20:00", transport: "🚶 步行 5分", duration: "2小時", lat: 33.5880, lng: 130.3960, desc: "福岡的「裏原宿」。\n🛍️ **必逛：** Supreme, Stussy, Carhartt 等潮牌，還有許多質感古著店 (2nd Street, Big Time)。巷弄裡充滿塗鴉牆，非常適合街拍。", nearby: "1. Alice on Wednesday\n2. Line Friends Store", tip: "適合在這裡買情侶裝。", link: "Daimyo Fukuoka" },
+                { id: 403, time: "15:30", icon: "🧢", title: "大名 (Daimyo) 散策", type: "shop", open: "11:00 - 20:00", transport: "🚶 步行 5分", duration: "2小時", lat: 33.5880, lng: 130.3960, desc: "福岡的「裏原宿」。\n🛍️ **必逛：** Supreme, Stussy, Carhartt 等潮牌，還有許多質感古著店 (2nd Street, Big Time)。巷弄裡充滿塗鴉牆，非常適合街拍。", nearby: "1. Alice on Wednesday\n2. Line Friends Store", tip: "適合在這裡買情侶裝。", link: "Daimyo Fukuoka", num1: 20000 },
                 { id: 4045, time: "18:00", icon: "🌿", title: "Acros 福岡 (階梯花園)", type: "spot", open: "10:00 - 18:00", transport: "🚶 步行 15分", duration: "30分鐘", lat: 33.5910, lng: 130.4020, desc: "建築外觀像一座綠色的小山，被植物覆蓋。\n📸 **亮點：** 可以沿著階梯走上去，雖然有點累，但晚上的燈光與建築結合非常漂亮。", nearby: "1. 水鏡天滿宮\n2. 福岡紅磚文化館", tip: "冬天晚上有時會有特別點燈。", link: "ACROS Fukuoka" },
-                { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", transport: "🚇 地鐵+步行", duration: "45分鐘", lat: 33.5800, lng: 130.4250, desc: "米其林推薦的老店。\n🍴 **口感：** 博多烏龍麵的特色是「軟糯」，不是讚岐那種 Q 彈的。麵條吸滿鮮甜的高湯，配上酥脆的炸牛蒡，簡單卻銷魂。", nearby: "1. 博多站南公園", tip: "只收現金，賣完會提早打烊。", link: "Hagakure Udon", num1: 1500 },
+                { id: 404, time: "19:00", icon: "🍜", title: "葉隱烏龍麵", type: "food", open: "11:00 - 21:00", transport: "🚇 地鐵+步行 10分", duration: "45分鐘", lat: 33.5800, lng: 130.4250, desc: "米其林推薦的老店。\n🍴 **口感：** 博多烏龍麵的特色是「軟糯」，不是讚岐那種 Q 彈的。麵條吸滿鮮甜的高湯，配上酥脆的炸牛蒡，簡單卻銷魂。", nearby: "1. 博多站南公園", tip: "只收現金，賣完會提早打烊。", link: "Hagakure Udon", num1: 2000 },
                 { id: 405, time: "20:30", icon: "💡", title: "警固公園 燈飾", type: "spot", open: "17:00 - 24:00", transport: "🚇 地鐵回到天神", duration: "30分鐘", lat: 33.5880, lng: 130.4000, desc: "天神年輕人聖誕節的聚集地。公園內佈滿了香檳金色的燈飾，還有溜冰場，聖誕氣氛滿點。", nearby: "1. 天神三越\n2. Solaria Plaza", returnInfo: "🛏️ 回住宿：地鐵/巴士 20 分鐘", tip: "就在三越百貨後面，逛累了剛好來休息。", link: "Kego Park" }
             ]},
-            { day: 5, date: "12/26 (FRI)", theme: "糸島海景 & 鋼彈 🌊", events: [
+            { day: 5, date: "12/26 (五) Day 5", theme: "糸島海景 & 鋼彈 🌊", essentials: "🎒 今日準備：駕照、防風外套、髮圈(海風大)。", events: [
                 { id: 501, time: "08:30", icon: "🚗", title: "Toyota 取車 (福岡機場)", type: "stay", open: "08:00 - 20:00", transport: "🚇 地鐵 15分", duration: "15分鐘", lat: 33.5800, lng: 130.4500, desc: "前往 **Toyota Rent a Car 福岡機場店** 取車。\n📝 **提示：** 雖然今天只租一天，但因為要去糸島，自駕會方便非常多。", nearby: "---", tip: "晚上 20:00 前要還車。", link: "Toyota Rent a Car Fukuoka Airport" },
-                { id: 5015, time: "10:00", icon: "🌳", title: "龍貓森林 (芥屋大門)", type: "spot", open: "全日", transport: "🚗 車程 45分", duration: "45分鐘", lat: 33.6000, lng: 130.1300, desc: "通往觀景台的步道被茂密的樹林包圍，形成一條天然隧道，極像《龍貓》裡的場景。\n📸 **拍照：** 在隧道口逆光拍攝，非常有神秘感。", nearby: "1. 芥屋海水浴場\n2. 芥屋大門遊覽船", tip: "蚊蟲較多，建議噴防蚊液。", link: "Keya no Oto Park" },
-                { id: 502, time: "11:30", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", transport: "🚗 車程 20分", duration: "30分鐘", lat: 33.6425, lng: 130.1436, desc: "糸島的地標。\n📸 **絕景：** 海中純白色的鳥居，後方有兩塊巨岩用注連繩相連，象徵夫妻圓滿。藍天白雲下怎麼拍都美。", nearby: "1. Palm Beach The Gardens (天使翅膀壁畫)\n2. 櫻井神社", tip: "海邊風勢非常強勁，女生建議要把頭髮綁起來。", link: "Sakurai Futamigaura" },
-                { id: 503, time: "12:30", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", transport: "🚗 車程 5分", duration: "90分鐘", lat: 33.6300, lng: 130.1600, desc: "糸島人氣 No.1 的海景餐廳。\n🍴 **必點：** 糸島野菜義大利麵、現烤麵包。坐在戶外露台區，眼前就是無敵海景，非常Chill。", nearby: "1. London Bus Cafe (紅色巴士)\n2. 製鹽所 工房 (花鹽布丁)", tip: "人氣很旺，建議一開門就去或提前預約。", link: "Bakery Restaurant Current", num1: 4000 },
-                { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", transport: "🚗 車程 50分", duration: "3小時", lat: 33.5650, lng: 130.4350, desc: "📸 **必看：** 門口矗立著 1:1 實物大 RX-93ff ν 鋼彈。\n✨ **演出：** 白天每整點頭部和手部會動；晚上 19:00 後會有牆面投影秀，非常熱血！", nearby: "1. KidZania Fukuoka\n2. 福岡市青果市場", tip: "3樓美食街有「金子半之助」和「久留米拉麵」。", link: "LaLaport Fukuoka" },
+                { id: 5015, time: "10:00", icon: "🌳", title: "龍貓森林 (芥屋大門)", type: "spot", open: "全日", transport: "🚗 開車 45分", duration: "45分鐘", lat: 33.6000, lng: 130.1300, desc: "通往觀景台的步道被茂密的樹林包圍，形成一條天然隧道，極像《龍貓》裡的場景。\n📸 **拍照：** 在隧道口逆光拍攝，非常有神秘感。", nearby: "1. 芥屋海水浴場\n2. 芥屋大門遊覽船", tip: "蚊蟲較多，建議噴防蚊液。", link: "Keya no Oto Park" },
+                { id: 502, time: "11:30", icon: "⛩️", title: "二見浦 夫婦岩", type: "spot", open: "24H 開放", transport: "🚗 開車 20分", duration: "30分鐘", lat: 33.6425, lng: 130.1436, desc: "糸島的地標。\n📸 **絕景：** 海中純白色的鳥居，後方有兩塊巨岩用注連繩相連，象徵夫妻圓滿。藍天白雲下怎麼拍都美。", nearby: "1. Palm Beach The Gardens (天使翅膀壁畫)\n2. 櫻井神社", tip: "海邊風勢非常強勁，女生建議要把頭髮綁起來。", link: "Sakurai Futamigaura" },
+                { id: 503, time: "12:30", icon: "🍝", title: "Current 海景午餐", type: "food", open: "08:00 - 17:00", transport: "🚗 開車 5分", duration: "90分鐘", lat: 33.6300, lng: 130.1600, desc: "糸島人氣 No.1 的海景餐廳。\n🍴 **必點：** 糸島野菜義大利麵、現烤麵包。坐在戶外露台區，眼前就是無敵海景，非常Chill。", nearby: "1. London Bus Cafe (紅色巴士)\n2. 製鹽所 工房 (花鹽布丁)", tip: "人氣很旺，建議一開門就去或提前預約。", link: "Bakery Restaurant Current", num1: 5000 },
+                { id: 504, time: "16:00", icon: "🤖", title: "Lalaport 福岡", type: "spot", open: "10:00 - 21:00", transport: "🚗 開車 50分", duration: "3小時", lat: 33.5650, lng: 130.4350, desc: "📸 **必看：** 門口矗立著 1:1 實物大 RX-93ff ν 鋼彈。\n✨ **演出：** 白天每整點頭部和手部會動；晚上 19:00 後會有牆面投影秀，非常熱血！", nearby: "1. KidZania Fukuoka\n2. 福岡市青果市場", tip: "3樓美食街有「金子半之助」和「久留米拉麵」。", link: "LaLaport Fukuoka" },
                 { id: 505, time: "20:00", icon: "🚘", title: "還車 (Toyota 機場店)", type: "stay", open: "08:00 - 20:00", transport: "🚗 開車 20分", duration: "15分鐘", lat: 33.5800, lng: 130.4500, desc: "結束今天的自駕行程，前往 **福岡機場店** 還車。\n📝 **檢查：** 車身狀況、ETC卡取出、加滿油。", nearby: "---", returnInfo: "🛏️ 回住宿：接駁車+地鐵 20 分鐘", tip: "還車後搭乘接駁車回地鐵站。", link: "Toyota Rent a Car Fukuoka Airport" }
             ]},
-            { day: 6, date: "12/27 (SAT)", theme: "最後衝刺 & 返程 ✈️", events: [
+            { day: 6, date: "12/27 (六) Day 6", theme: "最後衝刺 & 返程 ✈️", events: [
                 { id: 600, time: "09:30", icon: "🏯", title: "東長寺 (福岡大佛)", type: "spot", open: "09:00 - 17:00", transport: "🚶 步行 10分", duration: "45分鐘", lat: 33.5950, lng: 130.4150, desc: "擁有全日本最大的木造坐佛。\n✨ **體驗：** 大佛座下有一個「地獄極樂巡禮」，在全黑的通道中摸索前進，最後摸到「佛之環」象徵得到保佑。", nearby: "1. 承天寺\n2. 聖福寺", tip: "地獄通道真的伸手不見五指，要小心走。", link: "Tochoji Temple" },
                 { id: 601, time: "10:30", icon: "🎁", title: "博多站 1番街", type: "shop", open: "08:00 - 21:00", transport: "🚶 步行 10分", duration: "60分鐘", lat: 33.5902, lng: 130.4207, desc: "最後掃貨時間！\n🛍️ **必買手信：** 博多通饅頭 (奶香濃郁)、Menbei (明太子仙貝)、努努雞 (冷炸雞，配酒絕配)。", nearby: "1. 博多阪急地下街\n2. AMU Plaza", tip: "買完直接塞進行李箱。", link: "Hakata Station 1 Bangai", num1: 5000 },
                 { id: 602, time: "11:30", icon: "🍜", title: "一蘭 本社總本店", type: "food", open: "24H 營業", transport: "🚶 步行 15分", duration: "60分鐘", lat: 33.5930, lng: 130.4050, desc: "一蘭拉麵的總壇！\n📸 **特色：** 整棟樓掛滿紅燈籠，非常壯觀。這裡限定使用「長方形陶瓷碗」盛裝拉麵（象徵重箱）。", nearby: "1. 博多座\n2. 川端通商店街", tip: "建議避開正午 12 點的人潮。", link: "Ichiran Main Office", num1: 2000 },
                 { id: 603, time: "14:00", icon: "🛫", title: "起飛返家", type: "stay", open: "---", transport: "🚇 地鐵 10分", duration: "---", lat: 33.5859, lng: 130.4507, desc: "搭乘地鐵前往福岡機場國際線。\n⚠️ **注意：** 福岡機場國際線安檢排隊通常較久，請務必預留充裕時間。", nearby: "1. 免稅店\n2. 7-11 (最後補貨)", tip: "Check-in 後禁區內還有免稅店可以做最後衝刺。", link: "Fukuoka Airport International Terminal" }
             ]}
         ];
+        
+        // Global Vars
+        window.tripData = []; window.todoList = []; window.expenseList = []; window.shoppingList = []; window.exchangeRate = 0.052;
+        window.currentDayIndex = 0; window.editingEventId = null; window.map = null;
 
-        var recommendedTodos = [
-            { text: "預約機票 (福岡來回)", done: false },
-            { text: "預約住宿：Richmond Hotel (全天數)", done: false },
-            { text: "預約住宿：由布院 Poppo 庵 (Day 2 一晚)", done: false },
-            { text: "預約租車：Toyota Rent-a-Car (Day 2-3)", done: false },
-            { text: "預約租車：Toyota Rent-a-Car (Day 5)", done: false },
-            { text: "預約餐廳：石原牛 (Day 1 午餐)", done: false },
-            { text: "預約餐廳：YASOHACHI 牛舌 (Day 3 晚餐)", done: false },
-            { text: "購買 eSIM / 開通漫遊", done: false },
-            { text: "填寫 Visit Japan Web", done: false },
-            { text: "購買旅遊保險", done: false }
-        ];
-
-        var tripData = []; var todoList = []; var expenseList = []; var exchangeRate = 0.052; var currentDayIndex = 0; var isEditMode = false; var editingEventId = null; var map = null; var mapMarkers = []; var polylines = [];
-
-        function init() {
+        // Global Functions attached to window
+        window.init = function() {
             try {
-                var savedTrip = localStorage.getItem("myTripData_v2");
-                if (savedTrip) tripData = JSON.parse(savedTrip); else tripData = JSON.parse(JSON.stringify(defaultData));
+                var savedTrip = localStorage.getItem("myTripData_v17");
+                if (savedTrip) window.tripData = JSON.parse(savedTrip); else window.tripData = JSON.parse(JSON.stringify(defaultData));
+                
                 var savedTodo = localStorage.getItem("myTodoList");
-                if (savedTodo) todoList = JSON.parse(savedTodo); else todoList = JSON.parse(JSON.stringify(recommendedTodos));
+                if (savedTodo) window.todoList = JSON.parse(savedTodo); else window.todoList = [];
+                
                 var savedExpense = localStorage.getItem("myExpenseList");
-                if (savedExpense) expenseList = JSON.parse(savedExpense); else expenseList = [];
-                if(!Array.isArray(expenseList)) expenseList = [];
+                if (savedExpense) window.expenseList = JSON.parse(savedExpense); else window.expenseList = [];
+                
+                var savedShop = localStorage.getItem("myShoppingList");
+                if (savedShop) window.shoppingList = JSON.parse(savedShop); else window.shoppingList = [];
+
                 var savedRate = localStorage.getItem("myExchangeRate");
-                if (savedRate) exchangeRate = parseFloat(savedRate);
-                document.getElementById('exchangeRate').value = exchangeRate;
-                renderNav(); renderDay(currentDayIndex);
+                if (savedRate) window.exchangeRate = parseFloat(savedRate);
+                
+                document.getElementById('exchangeRate').value = window.exchangeRate;
+                
+                renderNav();
+                renderDay(window.currentDayIndex);
                 initMap();
-            } catch (e) {
-                console.error("Init Error:", e);
-                tripData = JSON.parse(JSON.stringify(defaultData));
-                todoList = JSON.parse(JSON.stringify(recommendedTodos));
-                expenseList = [];
-                renderNav(); renderDay(currentDayIndex);
+            } catch(e) {
+                console.error(e);
+                // localStorage.clear(); // Don't auto clear to prevent data loss
+                window.tripData = JSON.parse(JSON.stringify(defaultData));
+                renderNav(); renderDay(0);
             }
-        }
+        };
 
-        // --- Map Logic ---
-        function initMap() {
-            // Default center: Hakata
-            map = L.map('map').setView([33.5902, 130.4207], 13);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 19
-            }).addTo(map);
-            
-            // Create controls
-            var controlHtml = '<button class="map-filter-btn" onclick="showMapDay(-1)">全部</button>';
-            tripData.forEach(function(day, index) {
-                controlHtml += '<button class="map-filter-btn" onclick="showMapDay(' + index + ')">Day ' + day.day + '</button>';
-            });
-            document.getElementById('mapControls').innerHTML = controlHtml;
-        }
+        window.resetData = function() { if(confirm("確定重置所有資料？")) { localStorage.clear(); location.reload(); } };
+        window.saveData = function() { localStorage.setItem("myTripData_v17", JSON.stringify(window.tripData)); renderDay(window.currentDayIndex); };
+        window.saveTodo = function() { localStorage.setItem("myTodoList", JSON.stringify(window.todoList)); renderTodoList(); };
+        window.saveExpense = function() { localStorage.setItem("myExpenseList", JSON.stringify(window.expenseList)); localStorage.setItem("myExchangeRate", window.exchangeRate); renderExpenseList(); };
+        window.saveShopping = function() { localStorage.setItem("myShoppingList", JSON.stringify(window.shoppingList)); renderShoppingList(); };
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; };
 
-        function showMapDay(dayIndex) {
-            // Update buttons
-            var btns = document.querySelectorAll('.map-filter-btn');
-            btns.forEach((b, i) => {
-                if (dayIndex === -1 && i === 0) b.classList.add('active');
-                else if (i === dayIndex + 1) b.classList.add('active');
-                else b.classList.remove('active');
-            });
-
-            // Clear existing
-            mapMarkers.forEach(m => map.removeLayer(m));
-            mapMarkers = [];
-            polylines.forEach(p => map.removeLayer(p));
-            polylines = [];
-
-            var points = [];
-            var colorMap = ['#D32F2F', '#7B1FA2', '#1976D2', '#388E3C', '#FBC02D', '#E64A19']; // Colors for days
-
-            // Helper to add marker
-            function addEventToMap(evt, dayIdx, order) {
-                if (evt.lat && evt.lng) {
-                    var color = colorMap[dayIdx % colorMap.length];
-                    var iconHtml = '<div style="background:'+color+';color:white;border-radius:50%;width:24px;height:24px;text-align:center;line-height:24px;font-weight:bold;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);">'+order+'</div>';
-                    var icon = L.divIcon({ className: 'custom-div-icon', html: iconHtml, iconSize: [24, 24], iconAnchor: [12, 12] });
-                    var marker = L.marker([evt.lat, evt.lng], { icon: icon }).addTo(map)
-                        .bindPopup('<b>Day ' + (dayIdx + 1) + ': ' + evt.title + '</b><br>' + evt.time);
-                    mapMarkers.push(marker);
-                    return [evt.lat, evt.lng];
-                }
-                return null;
-            }
-
-            if (dayIndex === -1) {
-                // Show All
-                tripData.forEach((day, dIdx) => {
-                    var dayPoints = [];
-                    day.events.forEach((evt, eIdx) => {
-                        var pt = addEventToMap(evt, dIdx, eIdx + 1);
-                        if(pt) dayPoints.push(pt);
-                    });
-                    if(dayPoints.length > 1) {
-                        var line = L.polyline(dayPoints, { color: colorMap[dIdx % colorMap.length], weight: 3, opacity: 0.7 }).addTo(map);
-                        polylines.push(line);
-                        points = points.concat(dayPoints);
-                    }
-                });
-            } else {
-                // Show Single Day
-                var day = tripData[dayIndex];
-                day.events.forEach((evt, eIdx) => {
-                    var pt = addEventToMap(evt, dayIndex, eIdx + 1);
-                    if(pt) points.push(pt);
-                });
-                if(points.length > 1) {
-                    var line = L.polyline(points, { color: colorMap[dayIndex % colorMap.length], weight: 4 }).addTo(map);
-                    polylines.push(line);
-                }
-            }
-
-            if(points.length > 0) map.fitBounds(L.latLngBounds(points).pad(0.1));
-        }
-
-        // --- Standard Functions (Save, Render, etc.) ---
-        function saveData() { localStorage.setItem("myTripData_v2", JSON.stringify(tripData)); renderDay(currentDayIndex); }
-        function saveTodo() { localStorage.setItem("myTodoList", JSON.stringify(todoList)); renderTodoList(); }
-        function saveExpense() { localStorage.setItem("myExpenseList", JSON.stringify(expenseList)); localStorage.setItem("myExchangeRate", exchangeRate); renderExpenseList(); }
-        function resetData() { if(confirm("確定重置所有資料？")) { localStorage.clear(); location.reload(); } }
-
-        function renderNav() {
+        // Nav
+        window.renderNav = function() {
             var nav = document.getElementById('navScroll'); nav.innerHTML = '';
-            // Add Map Tab
-            var mapBtn = document.createElement('button');
-            mapBtn.className = 'day-tab' + (currentDayIndex === -1 ? ' active' : '');
-            mapBtn.innerText = '🗺️ 地圖';
-            mapBtn.onclick = function() { switchDay(-1); };
-            nav.appendChild(mapBtn);
-
-            tripData.forEach(function(day, index) {
+            window.tripData.forEach((day, index) => {
                 var btn = document.createElement('button');
-                btn.className = 'day-tab' + (index === currentDayIndex ? ' active' : '');
-                btn.innerText = 'Day ' + day.day;
+                btn.className = 'day-tab' + (index === window.currentDayIndex ? ' active' : '');
+                btn.innerText = day.date.split(' ')[0];
                 btn.onclick = function() { switchDay(index); };
                 nav.appendChild(btn);
             });
-        }
-
-        function switchDay(index) { 
-            currentDayIndex = index; 
-            renderNav(); 
-            if (index === -1) {
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('mapContainer').style.display = 'block';
-                document.getElementById('mapControls').style.display = 'flex';
-                map.invalidateSize();
-                showMapDay(-1); // Default show all
-            } else {
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('mapContainer').style.display = 'none';
-                document.getElementById('mapControls').style.display = 'none';
-                renderDay(index); 
+        };
+        window.switchDay = function(index) { 
+            window.currentDayIndex = index; renderNav(); renderDay(index); 
+            // Only try to resize map if the element is visible
+            if(document.getElementById('day-map').style.display !== 'none' && window.map) { 
+                 window.map.invalidateSize(); 
+                 updateDayMap(index); 
             }
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }
+        };
 
-        function renderDay(index) {
-            var data = tripData[index]; var main = document.getElementById('mainContent'); var html = '';
+        // Map
+        window.initMap = function() {
+            if (document.getElementById('day-map')) {
+                window.map = L.map('day-map', { zoomControl: false }).setView([33.5902, 130.4207], 12);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '' }).addTo(window.map);
+                updateDayMap(window.currentDayIndex);
+            }
+        };
+        window.updateDayMap = function(dayIndex) {
+            if (!window.map) return;
+            window.map.eachLayer(function (layer) { if (layer instanceof L.Marker || layer instanceof L.Polyline) window.map.removeLayer(layer); });
+            var dayEvents = window.tripData[dayIndex].events.filter(e => e.lat && e.lng);
+            if (dayEvents.length === 0) { document.getElementById('day-map').style.display='none'; return; }
+            document.getElementById('day-map').style.display='block';
+            var points = [];
+            dayEvents.forEach((evt, i) => {
+                var iconHtml = '<div style="background:#BF360C;color:white;border-radius:50%;width:24px;height:24px;text-align:center;line-height:24px;font-weight:bold;font-size:14px;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);">'+(i+1)+'</div>';
+                var icon = L.divIcon({ className: 'custom-div-icon', html: iconHtml, iconSize: [24, 24] });
+                L.marker([evt.lat, evt.lng], { icon: icon }).addTo(window.map).bindPopup(evt.title);
+                points.push([evt.lat, evt.lng]);
+            });
+            if (points.length > 1) { 
+                // Dashed line for movement
+                L.polyline(points, { color: '#4E342E', weight: 3, dashArray: '5, 10' }).addTo(window.map); 
+                window.map.fitBounds(L.latLngBounds(points).pad(0.2)); 
+            } 
+            else if (points.length === 1) { window.map.setView(points[0], 13); }
+        };
+
+        // Render Day
+        window.renderDay = function(index) {
+            var data = window.tripData[index]; var main = document.getElementById('mainContent'); var html = '';
+            html += '<div id="day-map"></div>';
             html += '<div class="day-header"><div class="day-date">' + data.date + '</div><div class="day-theme">' + data.theme + '</div></div>';
-            html += '<div class="timeline ' + (isEditMode ? 'edit-mode' : '') + '">';
-            data.events.forEach(function(evt) {
-                html += '<div class="event-item"><div class="dot"></div><div class="time">' + evt.time + '</div>';
-                if(evt.transport) html += '<span class="transport-info">' + evt.transport + '</span>';
+            if(data.essentials) html += '<div class="essentials-box"><span class="essentials-title">🎒 每日清單</span>' + data.essentials + '</div>';
+            html += '<div class="timeline">';
+            data.events.forEach(evt => {
+                html += '<div class="event-item">';
+                html += '<div class="dot"></div>';
+                html += '<div class="time">' + evt.time + '</div>';
+                if(evt.transport) html += '<span class="transport-info">🚀 ' + evt.transport + '</span>';
                 
                 html += '<div class="card"><div class="card-header"><div class="icon-box">' + evt.icon + '</div><h3 class="card-title">' + evt.title + '</h3>';
-                // Edit controls now properly absolute positioned
-                html += '<div class="edit-controls"><button class="btn-sm btn-edit" onclick="openEditModal(' + evt.id + ')">✏️</button><button class="btn-sm btn-del" onclick="deleteEvent(' + evt.id + ')">🗑️</button></div></div>';
-
+                html += '<div class="edit-controls"><button class="btn-sm btn-edit" onclick="openEditModal(' + evt.id + ')">✏️</button><button class="btn-sm btn-del" onclick="deleteEvent(' + evt.id + ')">🗑️</button><button class="btn-sm btn-photo" onclick="triggerPhotoUpload(' + evt.id + ')">📷</button></div></div>';
                 var typeMap = { food: "美食", shop: "購物", spot: "景點", stay: "交通/宿" };
                 html += '<div class="tags"><span class="tag ' + evt.type + '">' + (typeMap[evt.type] || "其他") + '</span></div>';
-                
                 html += '<div class="info-row">';
                 if(evt.open) html += '<span class="open-hours">🕒 ' + evt.open + '</span>';
                 if(evt.duration) html += '<span class="duration-badge">⏱️ ' + evt.duration + '</span>';
                 html += '</div>';
-
-                if(evt.num1 || evt.num2) {
-                    html += '<div class="num-stats">';
-                    if(evt.num1) html += '<span>💰 ¥' + Number(evt.num1).toLocaleString() + '</span>';
-                    if(evt.num1 && evt.num2) html += ' | ';
-                    if(evt.num2) html += '<span>👥 ' + evt.num2 + '</span>';
-                    html += '</div>';
-                }
-                html += '<div class="card-desc">' + evt.desc.replace(/\n/g, '<br>') + '</div>';
-                
-                if(evt.nearby && evt.nearby !== "---") {
-                    html += '<div class="nearby-section"><span class="nearby-title">📍 附近順遊</span>' + evt.nearby.replace(/\n/g, '<br>') + '</div>';
-                }
-                
-                if(evt.returnInfo) {
-                    html += '<div class="return-section">' + evt.returnInfo + '</div>';
-                }
-
+                if(evt.num1 || evt.num2) { html += '<div class="num-stats">'; if(evt.num1) html += '<span>💰 ¥' + Number(evt.num1).toLocaleString() + '</span>'; if(evt.num1 && evt.num2) html += ' | '; if(evt.num2) html += '<span>👥 ' + evt.num2 + '</span>'; html += '</div>'; }
+                html += '<div class="card-desc">' + (evt.desc ? evt.desc.replace(/\n/g, '<br>') : '') + '</div>';
+                if(evt.photo) { html += '<div class="photo-area"><div class="photo-container has-photo"><img src="' + evt.photo + '" class="photo-img"><button class="btn-del-photo" onclick="deletePhoto(' + evt.id + ')">×</button></div></div>'; }
+                if(evt.nearby && evt.nearby !== "---") { html += '<div class="nearby-section"><span class="nearby-title">📍 附近順遊</span><div class="nearby-content">' + evt.nearby.replace(/\n/g, '<br>') + '</div></div>'; }
+                if(evt.returnInfo) { html += '<div class="return-section">' + evt.returnInfo + '</div>'; }
                 html += '<div class="footer-action">';
                 if(evt.tip) html += '<div class="tip-text">' + evt.tip + '</div>'; else html += '<div></div>';
-                if(evt.link && !isEditMode) {
-                    var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(evt.link);
-                    html += '<a href="' + mapUrl + '" class="map-link" target="_blank">MAP ↗</a>';
-                }
-                html += '</div>';
-                html += '</div></div>';
+                if(evt.link) { var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(evt.link); html += '<a href="' + mapUrl + '" class="map-link" target="_blank">MAP ↗</a>'; }
+                html += '</div></div></div>';
             });
-            html += '<button class="add-event-btn" onclick="openAddModal()">+ 新增行程</button></div>';
+            html += '</div>'; 
             main.innerHTML = html;
-        }
+            setTimeout(() => { if(!window.map) initMap(); else { window.map.invalidateSize(); updateDayMap(index); } }, 300);
+        };
 
-        // ... (Expense, Todo, Edit functions remain largely same but added returnInfo to saveEvent) ...
-        function openExpenseModal() { renderExpenseList(); document.getElementById('expenseModal').style.display = 'flex'; }
-        function updateRate() { exchangeRate = parseFloat(document.getElementById('exchangeRate').value); calcFromJPY(); saveExpense(); }
-        function calcFromJPY() { var jpy = parseFloat(document.getElementById('expAmount').value) || 0; document.getElementById('expAmountHKD').value = (jpy * exchangeRate).toFixed(1); }
-        function calcFromHKD() { var hkd = parseFloat(document.getElementById('expAmountHKD').value) || 0; document.getElementById('expAmount').value = (hkd / exchangeRate).toFixed(0); }
-        function addExpense() { var name = document.getElementById('expName').value; var amount = parseFloat(document.getElementById('expAmount').value); var cat = document.getElementById('expCat').value; if(!name || isNaN(amount)) { alert("請輸入項目和金額"); return; } expenseList.push({ id: Date.now(), name: name, cat: cat, amount: amount }); document.getElementById('expName').value = ""; document.getElementById('expAmount').value = ""; document.getElementById('expAmountHKD').value = ""; saveExpense(); }
-        function deleteExpense(id) { if(confirm("刪除此紀錄？")) { expenseList = expenseList.filter(function(e) { return e.id !== id; }); saveExpense(); } }
-        function renderExpenseList() { var container = document.getElementById('expenseListContainer'); var html = ''; var totalJPY = 0; var summary = { food: 0, shop: 0, trans: 0, play: 0, stay: 0, misc: 0 }; var catMap = { food: "🍽️ 食", shop: "🛍️ 買", trans: "🚇 行", play: "🎡 玩", stay: "🏠 住", misc: "🧩 雜" }; if(expenseList.length === 0) html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>'; else { expenseList.forEach(item => { totalJPY += item.amount; var catKey = summary.hasOwnProperty(item.cat) ? item.cat : 'misc'; summary[catKey] += item.amount; var hkd = (item.amount * exchangeRate).toFixed(1); html += '<div class="expense-item"><div><span style="margin-right:5px;">' + catMap[catKey] + '</span> ' + item.name + '</div><div style="text-align:right;"><div class="expense-price">¥' + item.amount.toLocaleString() + '</div><div class="hkd-sub">HK$' + hkd + '</div></div><button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">×</button></div>'; }); } container.innerHTML = html; var totalHKD = (totalJPY * exchangeRate).toFixed(1); document.getElementById('totalDisplay').innerText = "¥ " + totalJPY.toLocaleString() + " (HK$ " + totalHKD + ")"; var sumHtml = ''; var order = ['food', 'shop', 'trans', 'play', 'stay', 'misc']; order.forEach(k => { var sumHkd = (summary[k] * exchangeRate).toFixed(0); sumHtml += '<div class="summary-row"><span>' + catMap[k] + '</span><span>¥' + summary[k].toLocaleString() + ' (HK$' + sumHkd + ')</span></div>'; }); document.getElementById('summaryContainer').innerHTML = sumHtml; }
+        // Shopping List
+        window.openShoppingModal = function() { renderShoppingList(); document.getElementById('shoppingModal').style.display = 'flex'; };
+        window.addShopItem = function() { var name = document.getElementById('shopName').value; var item = document.getElementById('shopItem').value; if(!name) return; window.shoppingList.push({ id: Date.now(), name: name, item: item, done: false }); document.getElementById('shopName').value = ""; document.getElementById('shopItem').value = ""; window.saveShopping(); };
+        window.toggleShopItem = function(id) { var item = window.shoppingList.find(i => i.id === id); if(item) { item.done = !item.done; window.saveShopping(); } };
+        window.deleteShopItem = function(id) { window.shoppingList = window.shoppingList.filter(i => i.id !== id); window.saveShopping(); };
+        window.renderShoppingList = function() { var c = document.getElementById('shoppingListContainer'); var h = ''; if(window.shoppingList.length === 0) h = '<div style="text-align:center;color:#CCC;">無清單</div>'; else { window.shoppingList.forEach(s => { h += `<div class="shop-item"><input type="checkbox" class="shop-check" ${s.done?'checked':''} onchange="toggleShopItem(${s.id})"><div class="shop-details"><div class="shop-name">To: ${s.name}</div><div class="shop-text ${s.done?'done':''}">${s.item}</div></div><button class="shop-del" onclick="deleteShopItem(${s.id})">×</button></div>`; }); } c.innerHTML = h; };
 
-        function toggleEditMode() { isEditMode = !isEditMode; var btn = document.getElementById('editToggleBtn'); if(isEditMode) { btn.innerText = "✅"; btn.style.background = "#51CF66"; } else { btn.innerText = "✏️"; btn.style.background = "var(--primary)"; } renderDay(currentDayIndex); }
-        function openAddModal() { editingEventId = null; document.getElementById('modalTitle').innerText = "新增行程"; document.getElementById('inpHour').value = ""; document.getElementById('inpMinute').value = ""; document.getElementById('inpTitle').value = ""; document.getElementById('inpDesc').value = ""; document.getElementById('inpNearby').value = ""; document.getElementById('inpDuration').value = ""; document.getElementById('inpTransport').value = ""; document.getElementById('inpReturn').value = ""; document.getElementById('inpOpen').value = ""; document.getElementById('inpTip').value = ""; document.getElementById('inpNum1').value = ""; document.getElementById('inpNum2').value = ""; document.getElementById('eventModal').style.display = 'flex'; }
-        function openEditModal(id) { editingEventId = id; var dayData = tripData[currentDayIndex]; var evt = dayData.events.find(e => e.id === id); if(!evt) return; document.getElementById('modalTitle').innerText = "修改行程"; if (evt.time && evt.time.includes(":")) { var parts = evt.time.split(":"); document.getElementById('inpHour').value = parseInt(parts[0]); document.getElementById('inpMinute').value = parseInt(parts[1]); } else { document.getElementById('inpHour').value = ""; document.getElementById('inpMinute').value = ""; } document.getElementById('inpTitle').value = evt.title; document.getElementById('inpType').value = evt.type; document.getElementById('inpOpen').value = evt.open || ""; document.getElementById('inpDesc').value = evt.desc || ""; document.getElementById('inpNearby').value = evt.nearby || ""; document.getElementById('inpDuration').value = evt.duration || ""; document.getElementById('inpTransport').value = evt.transport || ""; document.getElementById('inpReturn').value = evt.returnInfo || ""; document.getElementById('inpTip').value = evt.tip || ""; document.getElementById('inpNum1').value = evt.num1 || ""; document.getElementById('inpNum2').value = evt.num2 || ""; document.getElementById('eventModal').style.display = 'flex'; }
-        function saveEvent() {
-            var h = document.getElementById('inpHour').value; var m = document.getElementById('inpMinute').value; var title = document.getElementById('inpTitle').value; var type = document.getElementById('inpType').value; var open = document.getElementById('inpOpen').value; var desc = document.getElementById('inpDesc').value; var nearby = document.getElementById('inpNearby').value; var duration = document.getElementById('inpDuration').value; var transport = document.getElementById('inpTransport').value; var returnInfo = document.getElementById('inpReturn').value; var tip = document.getElementById('inpTip').value; var num1 = document.getElementById('inpNum1').value; var num2 = document.getElementById('inpNum2').value;
+        // Event Actions
+        window.openAddModal = function() { editingEventId = null; document.getElementById('modalTitle').innerText = "新增行程"; clearEventForm(); document.getElementById('eventModal').style.display = 'flex'; };
+        window.clearEventForm = function() { document.getElementById('inpHour').value = ""; document.getElementById('inpMinute').value = ""; document.getElementById('inpTitle').value = ""; document.getElementById('inpOpen').value = ""; document.getElementById('inpDesc').value = ""; document.getElementById('inpNearby').value = ""; document.getElementById('inpDuration').value = ""; document.getElementById('inpTransport').value = ""; document.getElementById('inpTip').value = ""; document.getElementById('inpNum1').value = ""; document.getElementById('inpNum2').value = ""; };
+        window.openEditModal = function(id) { 
+            window.editingEventId = id; var evt = window.tripData[window.currentDayIndex].events.find(e => e.id === id); if(!evt) return; 
+            document.getElementById('modalTitle').innerText = "修改行程"; 
+            if (evt.time && evt.time.includes(":")) { var parts = evt.time.split(":"); document.getElementById('inpHour').value = parseInt(parts[0]); document.getElementById('inpMinute').value = parseInt(parts[1]); }
+            document.getElementById('inpTitle').value = evt.title || ""; document.getElementById('inpType').value = evt.type || "spot"; document.getElementById('inpOpen').value = evt.open || ""; document.getElementById('inpDesc').value = evt.desc || ""; document.getElementById('inpNearby').value = evt.nearby || ""; document.getElementById('inpDuration').value = evt.duration || ""; document.getElementById('inpTransport').value = evt.transport || ""; document.getElementById('inpTip').value = evt.tip || ""; document.getElementById('inpNum1').value = evt.num1 || ""; document.getElementById('inpNum2').value = evt.num2 || ""; 
+            document.getElementById('eventModal').style.display = 'flex'; 
+        };
+        window.saveEvent = function() {
+            var h = document.getElementById('inpHour').value; var m = document.getElementById('inpMinute').value; var title = document.getElementById('inpTitle').value;
             if(!title) { alert("請輸入標題"); return; } if(h === "" || m === "") { alert("請輸入時間"); return; }
-            var timeString = String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0'); var iconMap = { food: "🍴", shop: "🛍️", spot: "📸", stay: "🚗" }; var icon = iconMap[type];
-            if(editingEventId) { var events = tripData[currentDayIndex].events; var evt = events.find(e => e.id === editingEventId); if(evt) { evt.time = timeString; evt.title = title; evt.type = type; evt.open = open; evt.desc = desc; evt.nearby = nearby; evt.duration = duration; evt.transport = transport; evt.returnInfo = returnInfo; evt.tip = tip; evt.icon = icon; evt.link = title; evt.num1 = num1; evt.num2 = num2; } } 
-            else { var newEvent = { id: Date.now(), time: timeString, title: title, type: type, icon: icon, open: open, desc: desc, nearby: nearby, duration: duration, transport: transport, returnInfo: returnInfo, tip: tip, link: title, num1: num1, num2: num2 }; tripData[currentDayIndex].events.push(newEvent); tripData[currentDayIndex].events.sort((a, b) => a.time.localeCompare(b.time)); }
-            saveData(); closeModal('eventModal');
-        }
-        function deleteEvent(id) { if(confirm("確定刪除此行程？")) { tripData[currentDayIndex].events = tripData[currentDayIndex].events.filter(e => e.id !== id); saveData(); } }
-
-        function openSyncModal() { var allData = { trip: tripData, todo: todoList, expense: expenseList, rate: exchangeRate }; var code = btoa(unescape(encodeURIComponent(JSON.stringify(allData)))); document.getElementById('exportTextarea').value = code; document.getElementById('syncModal').style.display = 'flex'; }
-        function copyExportData() { var textArea = document.getElementById('exportTextarea'); textArea.select(); document.execCommand('copy'); alert("已複製！"); }
-        function importData() { var code = document.getElementById('importInput').value.replace(/\s/g, ''); if(!code) return; try { var json = decodeURIComponent(escape(atob(code))); var imported = JSON.parse(json); if(imported.expense) { imported.expense.forEach(impItem => { if(!expenseList.some(localItem => localItem.id === impItem.id)) expenseList.push(impItem); }); } if(imported.todo) { imported.todo.forEach(impItem => { if(!todoList.some(localItem => localItem.text === impItem.text)) todoList.push(impItem); }); } if(imported.trip) { imported.trip.forEach(impDay => { var localDay = tripData.find(d => d.day === impDay.day); if(localDay) { impDay.events.forEach(impEvt => { var localEvtIndex = localDay.events.findIndex(e => e.id === impEvt.id); if(localEvtIndex > -1) { localDay.events[localEvtIndex] = impEvt; } else { localDay.events.push(impEvt); } }); localDay.events.sort((a, b) => a.time.localeCompare(b.time)); } }); } saveData(); saveTodo(); saveExpense(); alert("智能合併成功！"); closeModal('syncModal'); } catch(e) { console.log(e); alert("代碼格式錯誤！"); } }
-
-        function openTodoModal() { renderTodoList(); document.getElementById('todoModal').style.display = 'flex'; }
-        function renderTodoList() { var container = document.getElementById('todoListContainer'); var html = ''; if(todoList.length === 0) html = '<div style="text-align:center; color:#999; margin-top:20px;">尚無待辦</div>'; else { todoList.forEach(function(item, index) { html += '<div class="todo-item"><input type="checkbox" class="todo-checkbox" ' + (item.done ? 'checked' : '') + ' onchange="toggleTodo(' + index + ')"><div class="todo-text ' + (item.done ? 'done' : '') + '">' + item.text + '</div><button class="todo-del" onclick="deleteTodo(' + index + ')">×</button></div>'; }); } container.innerHTML = html; }
-        function importRecommendedTodos() { if(confirm("確定要匯入預約清單嗎？")) { var count = 0; recommendedTodos.forEach(function(recItem) { var exists = todoList.some(function(item) { return item.text === recItem.text; }); if (!exists) { todoList.push(JSON.parse(JSON.stringify(recItem))); count++; } }); saveTodo(); if (count > 0) alert("成功匯入 " + count + " 項新待辦！"); else alert("清單中的項目已存在，未重複匯入。"); } }
-        function addTodo() { var input = document.getElementById('newTodoInput'); var text = input.value.trim(); if(text) { todoList.push({ text: text, done: false }); input.value = ""; saveTodo(); } }
-        function toggleTodo(index) { todoList[index].done = !todoList[index].done; saveTodo(); }
-        function deleteTodo(index) { todoList.splice(index, 1); saveTodo(); }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+            var timeString = String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0');
+            var iconMap = { food: "🍴", shop: "🛍️", spot: "📸", stay: "🚗" }; var type = document.getElementById('inpType').value;
+            var newEvt = {
+                id: window.editingEventId ? window.editingEventId : Date.now(),
+                time: timeString, title: title, type: type, icon: iconMap[type],
+                open: document.getElementById('inpOpen').value, desc: document.getElementById('inpDesc').value,
+                nearby: document.getElementById('inpNearby').value, duration: document.getElementById('inpDuration').value,
+                transport: document.getElementById('inpTransport').value, tip: document.getElementById('inpTip').value,
+                num1: document.getElementById('inpNum1').value, num2: document.getElementById('inpNum2').value,
+                lat: 0, lng: 0, link: title
+            };
+            if(window.editingEventId) {
+                var idx = window.tripData[window.currentDayIndex].events.findIndex(e => e.id === window.editingEventId);
+                if(idx > -1) { 
+                    // Keep coords if editing
+                    newEvt.lat = window.tripData[window.currentDayIndex].events[idx].lat; 
+                    newEvt.lng = window.tripData[window.currentDayIndex].events[idx].lng;
+                    newEvt.photo = window.tripData[window.currentDayIndex].events[idx].photo; 
+                    window.tripData[window.currentDayIndex].events[idx] = newEvt; 
+                }
+            } else { 
+                window.tripData[window.currentDayIndex].events.push(newEvt); 
+            }
+            window.tripData[window.currentDayIndex].events.sort((a, b) => a.time.localeCompare(b.time)); window.saveData(); window.closeModal('eventModal');
+        };
+        window.deleteEvent = function(id) { if(confirm("確定刪除此行程？")) { window.tripData[window.currentDayIndex].events = window.tripData[window.currentDayIndex].events.filter(e => e.id !== id); window.saveData(); } };
         
-        init();
+        // Photo
+        window.triggerPhotoUpload = function(id) { var input = document.getElementById('photoInput'); input.onchange = function(e) { window.handlePhotoChange(e, id); }; input.click(); };
+        window.handlePhotoChange = function(e, id) { var file = e.target.files[0]; if(!file) return; var reader = new FileReader(); reader.onload = function(event) { var img = new Image(); img.src = event.target.result; img.onload = function() { var canvas = document.createElement('canvas'); var ctx = canvas.getContext('2d'); var maxWidth = 600; var scale = maxWidth / img.width; canvas.width = maxWidth; canvas.height = img.height * scale; ctx.drawImage(img, 0, 0, canvas.width, canvas.height); var compressedData = canvas.toDataURL('image/jpeg', 0.6); var day = window.tripData[window.currentDayIndex]; var evt = day.events.find(e => e.id === id); if(evt) { evt.photo = compressedData; window.saveData(); } } }; reader.readAsDataURL(file); };
+        window.deletePhoto = function(id) { if(confirm("刪除照片？")) { var day = window.tripData[window.currentDayIndex]; var evt = day.events.find(e => e.id === id); if(evt) { delete evt.photo; window.saveData(); } } };
+
+        // Expense
+        window.openExpenseModal = function() { window.renderExpenseList(); document.getElementById('expenseModal').style.display = 'flex'; };
+        window.updateRate = function() { window.exchangeRate = parseFloat(document.getElementById('exchangeRate').value); window.calcFromJPY(); window.saveExpense(); };
+        window.calcFromJPY = function() { var jpy = parseFloat(document.getElementById('expAmount').value) || 0; document.getElementById('expAmountHKD').value = (jpy * window.exchangeRate).toFixed(1); };
+        window.calcFromHKD = function() { var hkd = parseFloat(document.getElementById('expAmountHKD').value) || 0; document.getElementById('expAmount').value = (hkd / window.exchangeRate).toFixed(0); };
+        window.addExpense = function() { var name = document.getElementById('expName').value; var amount = parseFloat(document.getElementById('expAmount').value); var cat = document.getElementById('expCat').value; if(!name || isNaN(amount)) { alert("請輸入項目和金額"); return; } window.expenseList.push({ id: Date.now(), name: name, cat: cat, amount: amount }); document.getElementById('expName').value = ""; document.getElementById('expAmount').value = ""; document.getElementById('expAmountHKD').value = ""; window.saveExpense(); };
+        window.deleteExpense = function(id) { if(confirm("刪除此紀錄？")) { window.expenseList = window.expenseList.filter(function(e) { return e.id !== id; }); window.saveExpense(); } };
+        window.renderExpenseList = function() { 
+            var container = document.getElementById('expenseListContainer'); var html = ''; var totalJPY = 0; 
+            var summary = { flight_stay: 0, food: 0, shop: 0, trans: 0, play: 0, misc: 0 }; 
+            var catMap = { flight_stay: "✈️ 機+住", food: "🍽️ 食", shop: "🛍️ 買", trans: "🚇 行", play: "🎡 玩", misc: "🧩 雜" }; 
+            if(window.expenseList.length === 0) html = '<div style="text-align:center; color:#CCC; margin-top:20px;">暫無紀錄</div>'; 
+            else {
+                window.expenseList.forEach(item => {
+                    totalJPY += item.amount;
+                    var catKey = summary.hasOwnProperty(item.cat) ? item.cat : 'misc';
+                    summary[catKey] += item.amount;
+                    var hkd = (item.amount * window.exchangeRate).toFixed(1);
+                    html += '<div class="expense-item"><div><span style="margin-right:5px;">' + catMap[catKey] + '</span> ' + item.name + '</div><div style="text-align:right;"><div class="expense-price">¥' + item.amount.toLocaleString() + '</div><div class="hkd-sub">HK$' + hkd + '</div></div><button class="btn-del-exp" onclick="deleteExpense(' + item.id + ')">×</button></div>';
+                });
+            }
+            container.innerHTML = html;
+            var totalHKD = (totalJPY * window.exchangeRate).toFixed(1);
+            document.getElementById('totalDisplay').innerText = "¥ " + totalJPY.toLocaleString() + " (HK$ " + totalHKD + ")";
+            var sumHtml = ''; var order = ['flight_stay', 'food', 'shop', 'trans', 'play', 'misc']; 
+            order.forEach(k => { var sumHkd = (summary[k] * window.exchangeRate).toFixed(0); sumHtml += '<div class="summary-row"><span>' + catMap[k] + '</span><span>¥' + summary[k].toLocaleString() + ' (HK$' + sumHkd + ')</span></div>'; }); 
+            document.getElementById('summaryContainer').innerHTML = sumHtml; 
+        };
+
+        // Sync
+        window.openSyncModal = function() { var allData = { trip: window.tripData, todo: window.todoList, expense: window.expenseList, shop: window.shoppingList, rate: window.exchangeRate }; var code = btoa(unescape(encodeURIComponent(JSON.stringify(allData)))); document.getElementById('exportTextarea').value = code; document.getElementById('syncModal').style.display = 'flex'; };
+        window.copyExportData = function() { var textArea = document.getElementById('exportTextarea'); textArea.select(); document.execCommand('copy'); alert("已複製！"); };
+        window.importData = function() { var code = document.getElementById('importInput').value.replace(/\s/g, ''); if(!code) return; try { var json = decodeURIComponent(escape(atob(code))); var imported = JSON.parse(json); if(imported.expense) { imported.expense.forEach(impItem => { if(!window.expenseList.some(localItem => localItem.id === impItem.id)) window.expenseList.push(impItem); }); } if(imported.shop) { imported.shop.forEach(impItem => { if(!window.shoppingList.some(localItem => localItem.id === impItem.id)) window.shoppingList.push(impItem); }); } if(imported.todo) { imported.todo.forEach(impItem => { if(!window.todoList.some(localItem => localItem.text === impItem.text)) window.todoList.push(impItem); }); } if(imported.trip) { imported.trip.forEach(impDay => { var localDay = window.tripData.find(d => d.day === impDay.day); if(localDay) { impDay.events.forEach(impEvt => { var localEvtIndex = localDay.events.findIndex(e => e.id === impEvt.id); if(localEvtIndex > -1) { localDay.events[localEvtIndex] = impEvt; } else { localDay.events.push(impEvt); } }); localDay.events.sort((a, b) => a.time.localeCompare(b.time)); } }); } window.saveData(); window.saveTodo(); window.saveExpense(); window.saveShopping(); alert("智能合併成功！"); window.closeModal('syncModal'); } catch(e) { console.log(e); alert("代碼格式錯誤！"); } };
+        
+        // Todo
+        window.openTodoModal = function() { renderTodoList(); document.getElementById('todoModal').style.display = 'flex'; };
+        window.renderTodoList = function() { var container = document.getElementById('todoListContainer'); var html = ''; if(window.todoList.length === 0) html = '<div style="text-align:center; color:#999; margin-top:20px;">尚無待辦</div>'; else { window.todoList.forEach(function(item, index) { html += '<div class="todo-item"><input type="checkbox" class="todo-checkbox" ' + (item.done ? 'checked' : '') + ' onchange="toggleTodo(' + index + ')"><div class="todo-text ' + (item.done ? 'done' : '') + '">' + item.text + '</div><button class="todo-del" onclick="deleteTodo(' + index + ')">×</button></div>'; }); } container.innerHTML = html; };
+        window.addTodo = function() { var input = document.getElementById('newTodoInput'); var text = input.value.trim(); if(text) { window.todoList.push({ text: text, done: false }); input.value = ""; window.saveTodo(); } };
+        window.toggleTodo = function(index) { window.todoList[index].done = !window.todoList[index].done; window.saveTodo(); };
+        window.deleteTodo = function(index) { window.todoList.splice(index, 1); window.saveTodo(); };
+        window.importRecommendedTodos = function() { if(confirm("匯入預約清單？")) { var rec = [{text:"預約機票",done:false},{text:"預約住宿:Richmond Hotel",done:false},{text:"預約住宿:Poppo庵",done:false},{text:"預約租車:Toyota",done:false},{text:"預約餐廳:石原牛",done:false},{text:"預約餐廳:YASOHACHI",done:false},{text:"購買eSIM",done:false},{text:"填寫Visit Japan Web",done:false},{text:"購買旅遊保險",done:false}]; rec.forEach(function(r) { if(!window.todoList.some(x => x.text === r.text)) window.todoList.push(r); }); window.saveTodo(); } };
+
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; };
+
+        window.onload = init;
     </script>
 </body>
 </html>
